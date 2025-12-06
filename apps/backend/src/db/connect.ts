@@ -55,6 +55,7 @@ export const connectToDatabase = async () => {
             strict: true,
             deprecationErrors: true,
           },
+          dbName: process.env.DB_NAME,
         },
       );
       await mongoose.connection.db?.admin().command({ ping: 1 });
