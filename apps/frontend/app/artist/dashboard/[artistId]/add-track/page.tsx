@@ -10,7 +10,6 @@ import axiosInstance from "../../../../../util/axiosInstance";
 import { musicPlatformLinks, MusicPlatformLinks } from "@common/json-data";
 import useAuth from "../../../../../swrHooks/useAuth";
 import AccessUnauthorized from "../../../../../commonComponents/AccessUnauthorized";
-import useGenres from "../../../../../swrHooks/useGenres";
 import { trackFormValidators } from "@common/validation";
 const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data);
 interface TrackFormValues {

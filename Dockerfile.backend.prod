@@ -1,10 +1,11 @@
 ARG NODE_VERSION=22.16.0
-FROM node:${NODE_VERSION}-alpine AS backend-build
+FROM node:${NODE_VERSION}-alpine AS base
 
+FROM base AS backend-build
+ENV NODE_ENV=production
 WORKDIR /app
-
 # Copy base dependencies
-COPY package.json yarn.lock tsconfig.json ./
+COPY package.json yarn.lock tsconfig.json .yarnrc.yml ./
 COPY apps/backend/package.json ./apps/backend/
 COPY apps/backend/src/ ./apps/backend/src/
 COPY apps/backend/tsconfig.json ./apps/backend/tsconfig.json
@@ -15,24 +16,30 @@ COPY common/json-data/tsconfig.json ./common/json-data/tsconfig.json
 COPY common/types/package.json ./common/types/
 COPY common/types/src/ ./common/types/src/
 COPY common/types/tsconfig.json ./common/types/tsconfig.json
+COPY common/validation/package.json common/validation/package.json
+COPY common/validation/tsconfig.json common/validation/tsconfig.json
+COPY common/validation/src/ ./common/validation/src/
 
 # Install dependencies
 RUN corepack enable && yarn install
 
 RUN yarn workspace @common/json-data build
 RUN yarn workspace @common/types build
+RUN yarn workspace @common/validation build
 RUN yarn workspace backend build
 
 
 FROM node:${NODE_VERSION}-alpine AS backend-production
 WORKDIR /app
 
-COPY --from=backend-build /app/package.json /app/tsconfig.json /app/yarn.lock ./
+COPY --from=backend-build /app/package.json /app/tsconfig.json /app/yarn.lock /app/.yarnrc.yml ./
 
 COPY --from=backend-build /app/common/json-data/package.json ./common/json-data/
 COPY --from=backend-build /app/common/json-data/dist/ ./common/json-data/dist/
 COPY --from=backend-build /app/common/types/package.json ./common/types/
 COPY --from=backend-build /app/common/types/dist/ ./common/types/dist/
+COPY --from=backend-build /app/common/validation/package.json ./common/validation/
+COPY --from=backend-build /app/common/validation/dist/ ./common/validation/dist/
 
 COPY --from=backend-build /app/apps/backend/package.json /app/apps/backend/tsconfig.json \
 ./apps/backend/

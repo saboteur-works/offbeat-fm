@@ -47,9 +47,10 @@ type TrackSubmissionData = Pick<
   "title" | "genre" | "isrc" | "links"
 > & { trackArt?: File | string };
 
-type ICreateTrack = Pick<ITrack, "title" | "genre" | "isrc" | "links"> & {
-  trackArt?: File;
-};
+type ICreateTrack = Pick<
+  ITrack,
+  "artistId" | "title" | "genre" | "isrc" | "links" | "trackArt"
+>;
 
 type EditableTrack = Partial<
   Pick<ITrack, "title" | "genre" | "isrc" | "links" | "trackArt">

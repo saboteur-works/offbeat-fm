@@ -1,4 +1,4 @@
-import { ITrack, IUser, TrackSubmissionData } from "@common/types/src/types";
+import { ICreateTrack, ITrack, IUser } from "@common/types/src/types";
 import Track from "../models/Track";
 import User from "../models/User";
 import { createImagePath } from "../../utils/imageUtilities";
@@ -12,7 +12,7 @@ import Artist from "../models/Artist";
  */
 export const createTrack = async (
   managingUser: IUser & { id: string },
-  trackData: TrackSubmissionData,
+  trackData: ICreateTrack,
   trackArt?: Express.Multer.File,
 ) => {
   if (

@@ -3,7 +3,6 @@ import createLinkShapeValidators from "../validationUtils/createLinkShapeValidat
 import { musicPlatformLinks } from "@common/json-data";
 import createImageValidator from "../validationUtils/createImageValidator";
 import { MAX_IMAGE_FILE_SIZE_BYTES } from "../validationUtils/constants";
-import { ICreateTrack } from "@common/types/src/types";
 
 export const clientCreateTrackSchema = yup.object({
   title: yup.string().required("Track title is required"),
@@ -31,6 +30,7 @@ export const clientCreateTrackSchema = yup.object({
 export const serverCreateTrackSchema = yup.object({
   title: yup.string().required("Track title is required"),
   genre: yup.string().required("Genre is required"),
+  artistId: yup.string().required("Artist ID is required"),
   isrc: yup.string(),
   links: yup
     .object()

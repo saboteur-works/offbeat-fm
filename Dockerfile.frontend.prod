@@ -31,6 +31,11 @@ common/json-data/tsconfig.json \
 ./common/json-data/
 
 COPY \
+common/validation/package.json \
+common/validation/tsconfig.json \
+./common/validation/
+
+COPY \
 apps/frontend/package.json \
 apps/frontend/tsconfig.json \
 apps/frontend/postcss.config.mjs \
@@ -88,6 +93,14 @@ COPY \
 common/types/ \
 ./common/types/
 
+COPY \
+common/validation/package.json \
+common/validation/tsconfig.json \
+./common/validation/
+
+COPY \
+common/validation/ \
+./common/validation/
 
 
 # Build frontend
@@ -95,6 +108,7 @@ RUN corepack enable
 
 RUN yarn workspace @common/json-data build
 RUN yarn workspace @common/types build
+RUN yarn workspace @common/validation build
 RUN yarn workspace @mda/components build
 RUN yarn workspace frontend build
 CMD ["tail", "-f", "/dev/null"]
