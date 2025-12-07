@@ -1,4 +1,4 @@
-import { object, ObjectSchema, string } from "yup";
+import { object, ObjectSchema, string, ref } from "yup";
 import { IUserSignup } from "@common/types/src/types";
 
 export const signUpSchema: ObjectSchema<IUserSignup> = object({
@@ -11,4 +11,8 @@ export const signUpSchema: ObjectSchema<IUserSignup> = object({
     .min(6, "Password must be at least 6 characters")
     .max(50, "Password must be at most 50 characters")
     .required("Password is required"),
+  confirmPassword: string()
+    // @ts-expect-error Yup ref typing issue
+    .oneOf([ref("password"), null], "Passwords must match")
+    .required("Password confirmation is required."),
 });

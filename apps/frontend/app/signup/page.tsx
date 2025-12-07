@@ -10,10 +10,11 @@ import { IUserSignup } from "@common/types/src/types";
 
 export default function SignUpPage() {
   const router = useRouter();
-  const initialValues: IUserSignup = {
+  const initialValues: IUserSignup & { confirmPassword: string } = {
     email: "",
     username: "",
     password: "",
+    confirmPassword: "",
   };
 
   return (
@@ -59,6 +60,15 @@ export default function SignUpPage() {
             <Field id="password" type="password" name="password" />
             {errors.password && touched.password ? (
               <ErrorText message={errors.password} />
+            ) : null}
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <Field
+              id="confirmPassword"
+              type="password"
+              name="confirmPassword"
+            />
+            {errors.confirmPassword && touched.confirmPassword ? (
+              <ErrorText message={errors.confirmPassword} />
             ) : null}
             <p>
               By submitting this form, you agree to our{" "}

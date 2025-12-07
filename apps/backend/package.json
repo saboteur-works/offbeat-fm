@@ -42,7 +42,6 @@
     "@types/connect-ensure-login": "^0",
     "@types/cookie-parser": "^1",
     "@types/cors": "^2",
-    "@types/expect": "^24.3.2",
     "@types/express": "^5.0.3",
     "@types/express-session": "^1",
     "@types/morgan": "^1",
