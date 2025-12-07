@@ -15,7 +15,6 @@
     "@google-cloud/secret-manager": "^6.1.1",
     "@google-cloud/storage": "^7.17.2",
     "bcrypt": "^6.0.0",
-    "body-parser": "^2.2.0",
     "connect-ensure-login": "^0.1.1",
     "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",
@@ -37,7 +36,6 @@
   "devDependencies": {
     "@common/types": "workspace:^",
     "@types/bcrypt": "^6",
-    "@types/body-parser": "^1.19.6",
     "@types/chance": "^1",
     "@types/connect-ensure-login": "^0",
     "@types/cookie-parser": "^1",
