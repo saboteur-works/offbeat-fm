@@ -102,7 +102,6 @@ COPY \
 common/validation/ \
 ./common/validation/
 
-
 # Build frontend
 RUN corepack enable
 
@@ -113,11 +112,12 @@ RUN yarn workspace @mda/components build
 RUN yarn workspace frontend build
 CMD ["tail", "-f", "/dev/null"]
 
-
 FROM base AS frontend-production
-
+RUN addgroup -g 1225 nextjs-group && \
+    adduser -S -u 1225 -g nextjs-group nextjs-user
+RUN chown -R nextjs-user:nextjs-group /app
 WORKDIR /app
-
+USER nextjs-user
 COPY --from=frontend-build /app/apps/frontend/.next/standalone/apps/frontend/ ./apps/frontend/
 COPY --from=frontend-build /app/apps/frontend/public ./apps/frontend/public
 COPY --from=frontend-build /app/apps/frontend/.next/standalone/node_modules ./apps/frontend/node_modules

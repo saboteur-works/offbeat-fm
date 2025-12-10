@@ -29,8 +29,11 @@ RUN yarn workspace @common/validation build
 RUN yarn workspace backend build
 
 
-FROM node:${NODE_VERSION}-alpine AS backend-production
+FROM base AS backend-production
 WORKDIR /app
+RUN addgroup -g 1225 backend-group && \
+    adduser -S -u 1225 -g backend-group backend-user
+RUN chown -R backend-user:backend-group /app
 
 COPY --from=backend-build /app/package.json /app/tsconfig.json /app/yarn.lock /app/.yarnrc.yml ./
 
@@ -46,6 +49,7 @@ COPY --from=backend-build /app/apps/backend/package.json /app/apps/backend/tscon
 COPY --from=backend-build /app/apps/backend/dist/ ./apps/backend/dist/
 
 RUN corepack enable && yarn workspaces focus -A --production
+USER backend-user
 
 EXPOSE 3001
 

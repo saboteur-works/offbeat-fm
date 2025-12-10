@@ -31,9 +31,15 @@ COPY --from=backend-build /app ./
 CMD [ "yarn", "workspace", "backend", "test" ]
 
 FROM backend-base AS backend-dev
+RUN addgroup -g 1225 backend-group && \
+    adduser -S -u 1225 -g backend-group backend-user
+RUN chown -R backend-user:backend-group /app
+    
+USER backend-user
+
 WORKDIR /app
 COPY --from=backend-build /app ./
-RUN corepack enable && yarn install
+# RUN corepack enable && yarn install
 ENV CLIENT_URL=http://localhost:3000
 # ENV SESSION_SECRET=testing_secret
 EXPOSE 3001
