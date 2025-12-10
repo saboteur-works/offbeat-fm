@@ -4,7 +4,7 @@ import {
   logServerEvent,
 } from "../serverEvents/serverEvents";
 let storage: Storage;
-const imgBucketName = "offbeat-fm.com";
+const imgBucketName = process.env.STORAGE_BUCKET_NAME || "storage-bucket";
 if (process.env.NODE_ENV === "production") {
   storage = new Storage();
 } else {

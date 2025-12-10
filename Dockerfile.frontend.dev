@@ -3,6 +3,8 @@
 
 ARG NODE_VERSION=22.16.0
 FROM node:${NODE_VERSION}-alpine AS base
+WORKDIR /app
+# RUN apt-get update && apt-get install -y shadow-utils
 
 FROM base AS frontend-dependencies
 WORKDIR /app
@@ -100,9 +102,15 @@ RUN yarn workspace @mda/components build
 CMD ["tail", "-f", "/dev/null"]
 
 FROM base AS frontend-dev
+RUN addgroup -g 1224 nextjs-group && \
+    adduser -S -u 1224 -g nextjs-group nextjs-user
+RUN chown -R nextjs-user:nextjs-group /app
+    
+
 WORKDIR /app
 COPY --from=frontend-build /app ./
 RUN corepack enable
+USER nextjs-user
 
 EXPOSE 3000
 
