@@ -12,8 +12,11 @@ export default function PrivacyPolicyPage() {
         At OffBeat, we are committed to protecting your personal information and
         your right to privacy. If you have any questions about this Privacy
         Policy or our practices, please contact us at{" "}
-        <a href="mailto:email@example.com" className="text-blue-500">
-          email@example.com
+        <a
+          href={`mailto:${process.env.NEXT_PUBLIC_ADMIN_EMAIL}`}
+          className="text-blue-500"
+        >
+          {process.env.NEXT_PUBLIC_ADMIN_EMAIL}
         </a>
       </p>
       <h2 className="text-2xl font-semibold mb-2">Information We Collect</h2>

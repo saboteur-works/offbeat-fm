@@ -6,6 +6,7 @@
     "@common/types": "workspace:^",
     "@common/validation": "workspace:^",
     "@mda/components": "workspace:^",
+    "@next/third-parties": "^16.0.10",
     "@reduxjs/toolkit": "^2.9.0",
     "@tailwindcss/postcss": "^4.1.13",
     "axios": "^1.12.2",
