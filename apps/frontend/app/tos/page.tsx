@@ -68,8 +68,11 @@ export default function TermsOfServicePage() {
       <p className="mb-4">
         If you have any questions about these Terms of Service, please contact
         us at{" "}
-        <a href="mailto:email@example.com" className="text-blue-500">
-          email@example.com
+        <a
+          href={`mailto:${process.env.NEXT_PUBLIC_ADMIN_EMAIL}`}
+          className="text-blue-500"
+        >
+          {process.env.NEXT_PUBLIC_ADMIN_EMAIL}
         </a>
       </p>
     </div>

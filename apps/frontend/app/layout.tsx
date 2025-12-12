@@ -1,9 +1,14 @@
 import "./globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import StoreProvider from "./StoreProvider";
 import Header from "./login/Header";
 import Sidebar from "./Sidebar";
 import { Toaster } from "react-hot-toast";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "OffBeat - A music discovery platform",
+  description: "Discover and enjoy music like never before with OffBeat.",
+};
 export default function RootLayout({
   children,
 }: {
@@ -28,6 +33,7 @@ export default function RootLayout({
             </footer>
           </div>
         </body>
+        <GoogleAnalytics gaId="G-K7ZC9GL4CX" />
       </html>
     </StoreProvider>
   );
