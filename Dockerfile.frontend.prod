@@ -115,8 +115,8 @@ CMD ["tail", "-f", "/dev/null"]
 FROM base AS frontend-production
 RUN addgroup -g 1225 nextjs-group && \
     adduser -S -u 1225 -g nextjs-group nextjs-user
-RUN chown -R nextjs-user:nextjs-group /app
 WORKDIR /app
+RUN chown -R nextjs-user:nextjs-group /app
 USER nextjs-user
 COPY --from=frontend-build /app/apps/frontend/.next/standalone/apps/frontend/ ./apps/frontend/
 COPY --from=frontend-build /app/apps/frontend/public ./apps/frontend/public

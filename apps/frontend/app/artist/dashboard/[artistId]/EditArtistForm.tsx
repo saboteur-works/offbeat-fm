@@ -8,8 +8,10 @@ import { socialPlatformLinks } from "@common/json-data";
 import type { SocialPlatformLinks } from "@common/json-data";
 import { artistFormValidators } from "@common/validation";
 import { ClientEditableArtist } from "@common/types/src/types";
+import resizeImage from "../../../../util/resizeImg";
+import useGenres from "../../../../swrHooks/useGenres";
 interface EditArtistFormValues {
-  artistArt: File | string;
+  artistArt: File;
   artistName: string;
   genre: string;
   biography: string;
@@ -31,8 +33,10 @@ export default function EditArtistForm({
   >;
   setEditArtistDataAction: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const { genres, genresLoading, genreLoadError } = useGenres();
+
   const initialValues: EditArtistFormValues = {
-    artistArt: "",
+    artistArt: null,
     artistName: artistData?.name || "",
     genre: artistData?.genre || "",
     biography: artistData?.biography || "",
@@ -46,6 +50,16 @@ export default function EditArtistForm({
       {} as { [key in SocialPlatformLinks]: string },
     ),
   };
+
+  if (genreLoadError) {
+    return (
+      <div>
+        There was an error loading genre data for this form. Please try again
+        later or contact support.
+      </div>
+    );
+  }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -87,6 +101,18 @@ export default function EditArtistForm({
           ) : null}
 
           <label htmlFor="artistArt">Artwork</label>
+
+          <input
+            type="file"
+            name="artistArt"
+            id="artistArt"
+            accept="image/*"
+            className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
+            onChange={async (event) => {
+              const resized = await resizeImage(event.currentTarget.files[0]);
+              setFieldValue("artistArt", resized);
+            }}
+          />
           <ImgContainer
             src={
               artistData.artistArt
@@ -94,18 +120,15 @@ export default function EditArtistForm({
                 : undefined
             }
           />
-          <input
-            type="file"
-            name="artistArt"
-            id="artistArt"
-            accept="image/*"
-            onChange={(event) =>
-              setFieldValue("artistArt", event.currentTarget.files[0])
-            }
-          />
-
           <label htmlFor="genre">Genre</label>
-          <Field type="text" name="genre" id="genre" />
+          <Field id="genre" as="select" name="genre">
+            <option value="">Select a genre</option>
+            {genres.genres.map((genre) => (
+              <option key={genre} value={genre}>
+                {genre}
+              </option>
+            ))}
+          </Field>
           {errors.genre && touched.genre ? (
             <ErrorText message={errors.genre} />
           ) : null}
