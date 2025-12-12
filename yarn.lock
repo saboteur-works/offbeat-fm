@@ -2375,6 +2375,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/image-blob-reduce@npm:^4":
+  version: 4.1.4
+  resolution: "@types/image-blob-reduce@npm:4.1.4"
+  dependencies:
+    "@types/pica": "npm:*"
+  checksum: 10c0/0c9887fc52f4c3e8e984e9746a7729b23f3228beb91603ba23340266bf347ab77b86a5a9bfc761beccf8ea1e117dbdd974faa88d1a9d015417b891b082719303
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:^7.0.15":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
@@ -2461,6 +2470,13 @@ __metadata:
   dependencies:
     "@types/express": "npm:*"
   checksum: 10c0/58ca21800b7910385961b7a3dc9071fc9db6223242b96ff88d16c9d004ce7173524e7c17c63363595565af3f85ad932ee301efc8cc3e378bea172eebc9e07703
+  languageName: node
+  linkType: hard
+
+"@types/pica@npm:*, @types/pica@npm:^9":
+  version: 9.0.5
+  resolution: "@types/pica@npm:9.0.5"
+  checksum: 10c0/9a4092ade9376ca02959cff73bbb290924d2bcb6eef1e79247ece16781055f4327015e084346722b280f6b1d60987093876953eb71932b18199eed7c21cc8c67
   languageName: node
   linkType: hard
 
@@ -4723,13 +4739,17 @@ __metadata:
     "@mda/components": "workspace:^"
     "@reduxjs/toolkit": "npm:^2.9.0"
     "@tailwindcss/postcss": "npm:^4.1.13"
+    "@types/image-blob-reduce": "npm:^4"
     "@types/node": "npm:24.5.2"
+    "@types/pica": "npm:^9"
     "@types/react": "npm:19.2.2"
     "@types/react-dom": "npm:19.2.2"
     axios: "npm:^1.12.2"
     formik: "npm:^2.4.6"
+    image-blob-reduce: "npm:^4.1.0"
     joi: "npm:^18.0.1"
     next: "npm:16.0.7"
+    pica: "npm:^9.0.1"
     postcss: "npm:^8.5.6"
     react: "npm:19.2.0"
     react-dom: "npm:19.2.0"
@@ -4958,6 +4978,13 @@ __metadata:
   version: 0.1.2
   resolution: "globrex@npm:0.1.2"
   checksum: 10c0/a54c029520cf58bda1d8884f72bd49b4cd74e977883268d931fd83bcbd1a9eb96d57c7dbd4ad80148fb9247467ebfb9b215630b2ed7563b2a8de02e1ff7f89d1
+  languageName: node
+  linkType: hard
+
+"glur@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "glur@npm:1.1.2"
+  checksum: 10c0/756fcbc7f1a8576755811e31367feeaffbd13b7f20d788672bccbd65956839065e256621a7576f4ab321352b28a0aea442d64567bca23882526b891767ffbe3e
   languageName: node
   linkType: hard
 
@@ -5239,6 +5266,15 @@ __metadata:
   version: 7.0.5
   resolution: "ignore@npm:7.0.5"
   checksum: 10c0/ae00db89fe873064a093b8999fe4cc284b13ef2a178636211842cceb650b9c3e390d3339191acb145d81ed5379d2074840cf0c33a20bdbd6f32821f79eb4ad5d
+  languageName: node
+  linkType: hard
+
+"image-blob-reduce@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "image-blob-reduce@npm:4.1.0"
+  dependencies:
+    pica: "npm:^9.0.0"
+  checksum: 10c0/51adc1a65afdb9610102eff4a435a3460e29ebcc04ef1909237fecf3a72e791122e801261efeadeccb3e970bf28463ee5bad1c2839de5ffa842eb8c5fd25781d
   languageName: node
   linkType: hard
 
@@ -6292,6 +6328,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"multimath@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "multimath@npm:2.0.0"
+  dependencies:
+    glur: "npm:^1.1.2"
+    object-assign: "npm:^4.1.1"
+  checksum: 10c0/3e60b7e0ec69b19114d6a2419e86ca456c852a30d40ae37f6d6bd9377c2e98d8df2e33313e917e2c70dd6d08660345cc2183066679bbd43fb6848a7aba16cb02
+  languageName: node
+  linkType: hard
+
 "music-discovery-app@workspace:.":
   version: 0.0.0-use.local
   resolution: "music-discovery-app@workspace:."
@@ -6761,6 +6807,18 @@ __metadata:
   version: 0.0.1
   resolution: "pause@npm:0.0.1"
   checksum: 10c0/f362655dfa7f44b946302c5a033148852ed5d05f744bd848b1c7eae6a543f743e79c7751ee896ba519fd802affdf239a358bb2ea5ca1b1c1e4e916279f83ab75
+  languageName: node
+  linkType: hard
+
+"pica@npm:^9.0.0, pica@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "pica@npm:9.0.1"
+  dependencies:
+    glur: "npm:^1.1.2"
+    multimath: "npm:^2.0.0"
+    object-assign: "npm:^4.1.1"
+    webworkify: "npm:^1.5.0"
+  checksum: 10c0/1378f493ea4d2cc810ee31ca4e2fcaf7afe7330d8c03b0a4b2a26046de3eb4abaa5e21a2dc1bc7f26cc878f81d1e17eb3f54893ce0ca1241d32313436f52570f
   languageName: node
   linkType: hard
 
@@ -8823,6 +8881,13 @@ __metadata:
   version: 0.6.2
   resolution: "webpack-virtual-modules@npm:0.6.2"
   checksum: 10c0/5ffbddf0e84bf1562ff86cf6fcf039c74edf09d78358a6904a09bbd4484e8bb6812dc385fe14330b715031892dcd8423f7a88278b57c9f5002c84c2860179add
+  languageName: node
+  linkType: hard
+
+"webworkify@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "webworkify@npm:1.5.0"
+  checksum: 10c0/f451e42c5dc6e8f467736788ce05eef74455d6735705e5459825250b1c10db3e6087abdca149d965e86974a988109c4aa328d93ace3a252bad2f2889ab181bbb
   languageName: node
   linkType: hard
 

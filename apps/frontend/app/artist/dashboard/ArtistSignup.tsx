@@ -1,17 +1,18 @@
 "use client";
 import { Formik, Field } from "formik";
-import { Button, ErrorText } from "@mda/components";
+import { Button, ErrorText, ImgContainer } from "@mda/components";
 import axiosInstance from "../../../util/axiosInstance";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useGenres from "../../../swrHooks/useGenres";
 import { SocialPlatformLinks, socialPlatformLinks } from "@common/json-data";
 import { artistFormValidators } from "@common/validation";
+import resizeImage from "../../../util/resizeImg";
 interface ArtistSignupFormValues {
   artistName: string;
   genre: string;
   biography: string;
-  artistArt?: File | string;
+  artistArt?: File;
   links?: {
     [key in SocialPlatformLinks]?: string;
   };
@@ -24,7 +25,7 @@ export default function ArtistSignup() {
     artistName: "",
     genre: "",
     biography: "",
-    artistArt: "",
+    artistArt: null,
     links: Object.keys(socialPlatformLinks).reduce(
       (acc, key) => {
         acc[key as SocialPlatformLinks] = "";
@@ -91,18 +92,36 @@ export default function ArtistSignup() {
           }
         }}
       >
-        {({ handleSubmit, setFieldValue, errors, touched }) => (
+        {({ handleSubmit, setFieldValue, values, errors, touched }) => (
           <form
             className="flex flex-col space-y-4 w-md mt-4"
             onSubmit={handleSubmit}
           >
-            <label htmlFor="artistName">Artist Name*</label>
+            <label htmlFor="artistName">Artist Name</label>
             <Field id="artistName" type="text" name="artistName" />
             {errors.artistName && touched.artistName ? (
               <ErrorText message={errors.artistName} />
             ) : null}
-
-            <label htmlFor="genre">Genre*</label>
+            <label htmlFor="artistArt">Artist Profile Image</label>
+            <input
+              id="artistArt"
+              type="file"
+              accept="image/*"
+              name="artistArt"
+              className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
+              onChange={async (event) => {
+                const resized = await resizeImage(event.currentTarget.files[0]);
+                setFieldValue("artistArt", resized);
+              }}
+            />
+            <ImgContainer
+              src={
+                values.artistArt
+                  ? URL.createObjectURL(values.artistArt)
+                  : undefined
+              }
+            />
+            <label htmlFor="genre">Genre</label>
             <Field id="genre" as="select" name="genre">
               <option value="">Select a genre</option>
               {genres.genres.map((genre) => (
@@ -115,7 +134,7 @@ export default function ArtistSignup() {
               <ErrorText message={errors.genre} />
             ) : null}
 
-            <label htmlFor="biography">Biography*</label>
+            <label htmlFor="biography">Biography</label>
             <Field as="textarea" name="biography" />
             {errors.biography && touched.biography ? (
               <ErrorText message={errors.biography} />
@@ -134,15 +153,6 @@ export default function ArtistSignup() {
                 </div>
               ))}
 
-            <label htmlFor="artistArt">Track Art</label>
-            <input
-              id="artistArt"
-              type="file"
-              name="artistArt"
-              onChange={(event) =>
-                setFieldValue("artistArt", event.currentTarget.files[0])
-              }
-            />
             <Button label="Save Artist Profile" type="submit" />
           </form>
         )}

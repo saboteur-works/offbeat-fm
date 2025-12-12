@@ -2,7 +2,7 @@
 import { use } from "react";
 import submitTrack from "../../../../../actions/submitTrack";
 import { useRouter } from "next/navigation";
-import { Button, ErrorText } from "@mda/components";
+import { Button, ErrorText, ImgContainer } from "@mda/components";
 import { Formik, Field } from "formik";
 import toast from "react-hot-toast";
 import useSWR from "swr";
@@ -11,12 +11,13 @@ import { musicPlatformLinks, MusicPlatformLinks } from "@common/json-data";
 import useAuth from "../../../../../swrHooks/useAuth";
 import AccessUnauthorized from "../../../../../commonComponents/AccessUnauthorized";
 import { trackFormValidators } from "@common/validation";
+import resizeImage from "../../../../../util/resizeImg";
 const fetcher = (url: string) => axiosInstance.get(url).then((res) => res.data);
 interface TrackFormValues {
   title: string;
   genre: string;
   isrc?: string;
-  trackArt?: File | string;
+  trackArt?: File;
   links?: {
     [key in MusicPlatformLinks]?: string;
   };
@@ -85,7 +86,7 @@ export default function AddTrackPage({
           }
         }}
       >
-        {({ handleSubmit, setFieldValue, errors, touched }) => (
+        {({ handleSubmit, setFieldValue, values, errors, touched }) => (
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <h1 className="text-2xl font-bold mb-4">Add New Track</h1>
             <label htmlFor="title">Track Title</label>
@@ -97,9 +98,19 @@ export default function AddTrackPage({
             <input
               id="trackArt"
               type="file"
+              accept="image/*"
               name="trackArt"
-              onChange={(event) =>
-                setFieldValue("trackArt", event.currentTarget.files[0])
+              className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
+              onChange={async (event) => {
+                const resized = await resizeImage(event.currentTarget.files[0]);
+                setFieldValue("trackArt", resized);
+              }}
+            />
+            <ImgContainer
+              src={
+                values.trackArt
+                  ? URL.createObjectURL(values.trackArt)
+                  : undefined
               }
             />
             <label htmlFor="genre">Genre</label>

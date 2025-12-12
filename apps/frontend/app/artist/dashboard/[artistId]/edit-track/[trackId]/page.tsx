@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 import submitEditTrack from "../../../../../../actions/submitEditTrack";
 import { Formik, Field } from "formik";
-import { Button, ErrorText } from "@mda/components";
+import { Button, ErrorText, ImgContainer } from "@mda/components";
 import axiosInstance from "../../../../../../util/axiosInstance";
 import useSWR from "swr";
 import deleteTrack from "../../../../../../actions/deleteTrack";
@@ -13,12 +13,13 @@ import useAuth from "../../../../../../swrHooks/useAuth";
 import AccessUnauthorized from "../../../../../../commonComponents/AccessUnauthorized";
 import useGenres from "../../../../../../swrHooks/useGenres";
 import { trackFormValidators } from "@common/validation";
+import resizeImage from "../../../../../../util/resizeImg";
 
 interface TrackFormValues {
   title: string;
   genre: string;
   isrc?: string;
-  trackArt?: File | string;
+  trackArt?: File;
   links?: {
     [key in MusicPlatformLinks]: string;
   };
@@ -64,7 +65,7 @@ export default function EditTrackPage({
     title: data.data.title,
     genre: data.data.genre,
     isrc: data.data.isrc || undefined,
-    trackArt: data.data.trackArt,
+    trackArt: null,
     links: Object.keys(data.data.links).reduce((acc, key) => {
       acc[key] = data.data.links[key];
       return acc;
@@ -97,20 +98,34 @@ export default function EditTrackPage({
           }
         }}
       >
-        {({ handleSubmit, setFieldValue, errors, touched }) => (
+        {({ handleSubmit, setFieldValue, values, errors, touched }) => (
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <label htmlFor="title">Title</label>
             <Field id="title" type="text" name="title" />
             {errors.title && touched.title ? (
               <ErrorText message={errors.title} />
             ) : null}
+            <label htmlFor="trackArt">Track Art</label>
+            <input
+              id="trackArt"
+              type="file"
+              accept="image/*"
+              name="trackArt"
+              className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
+              onChange={async (event) => {
+                const resized = await resizeImage(event.currentTarget.files[0]);
+                setFieldValue("trackArt", resized);
+              }}
+            />
+            <ImgContainer
+              src={
+                values.trackArt
+                  ? URL.createObjectURL(values?.trackArt)
+                  : undefined
+              }
+            />
             <label>Genre</label>
-            <Field
-              id="genre"
-              as="select"
-              name="genre"
-              className="bg-gray-500 rounded py-2 px-3"
-            >
+            <Field id="genre" as="select" name="genre">
               <option value="">Select a genre</option>
               {genres &&
                 genres.genres.map((genre: string) => (
@@ -122,6 +137,7 @@ export default function EditTrackPage({
             {errors.genre && touched.genre ? (
               <ErrorText message={errors.genre} />
             ) : null}
+
             <label>ISRC</label>
             <Field id="isrc" type="text" name="isrc" />
             <p>Links</p>
@@ -133,15 +149,7 @@ export default function EditTrackPage({
                   <Field id={link} type="text" name={`links.${link}`} />
                 </div>
               ))}
-            <label htmlFor="trackArt">Track Art</label>
-            <input
-              id="trackArt"
-              type="file"
-              name="trackArt"
-              onChange={(event) =>
-                setFieldValue("trackArt", event.currentTarget.files[0])
-              }
-            />
+
             <div className="flex gap-4">
               <Button label="Submit" type="submit" />
               <Button
