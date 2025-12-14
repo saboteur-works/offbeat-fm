@@ -1,18 +1,16 @@
 "use client";
 import axios from "axios";
-import { use } from "react";
+import { use, useEffect, useState } from "react";
 import { useAppSelector } from "../../../../lib/hooks";
 import { useDispatch } from "react-redux";
 import { setFavoriteTracks } from "../../../../lib/features/users/userSlice";
-import {
-  Button,
-  ExternalLinkList,
-  ImgContainer,
-  SidebarButton,
-} from "@mda/components";
+import { ExternalLinkList, ImgContainer, SidebarButton } from "@mda/components";
 import axiosInstance from "../../../../util/axiosInstance";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
+import { YouTubeEmbed } from "@next/third-parties/google";
+import SpotifyEmbed from "../../../../embedding/spotify";
+
 const fetcher = (url) => axiosInstance.get(url).then((res) => res.data.data);
 export default function TrackPage({
   params,
@@ -21,6 +19,7 @@ export default function TrackPage({
 }) {
   const { artistSlug, trackId } = use(params);
   const router = useRouter();
+  const [youtubeVideoId, setYoutubeVideoId] = useState<string | null>(null);
   const { data: trackData } = useSWR(
     `/track/slug/${trackId}/artist/${artistSlug}?includeArt=true`,
     fetcher,
@@ -74,6 +73,22 @@ export default function TrackPage({
 
     return `${formattedMinutes}:${formattedSeconds}`;
   }
+
+  const getYoutubeVideoId = () => {
+    if (trackData?.links && Object.keys(trackData.links).includes("YouTube")) {
+      const youtubeLink = trackData.links["YouTube"];
+      const r = /youtube.com\/watch\?v=([a-zA-Z0-9-_]+)/;
+      const match = youtubeLink.match(r);
+      if (match && match[1]) {
+        setYoutubeVideoId(match[1]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getYoutubeVideoId();
+  }, [trackData]);
+
   if (!trackData) {
     return <div>Loading...</div>;
   }
@@ -121,6 +136,15 @@ export default function TrackPage({
             title="Listen on"
             containerClasses="mb-4 mt-4"
           />
+        </div>
+        <div id="embeds">
+          <h2 className="text-xl font-semibold">Embedded Media</h2>
+          <div className="mt-4">
+            {youtubeVideoId && <YouTubeEmbed videoid={youtubeVideoId} />}
+          </div>
+          {/* <div className="mt-4">
+            <SpotifyEmbed />
+          </div> */}
         </div>
       </div>
 
