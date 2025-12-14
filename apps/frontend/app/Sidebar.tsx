@@ -93,6 +93,16 @@ export default function Sidebar() {
         <SidebarSection title="Settings & Logout">
           <SidebarButton
             textAlign="left"
+            label="Artist Dashboard"
+            onClick={() => router.push("/artist/dashboard")}
+          />
+          <SidebarButton
+            textAlign="left"
+            label="User Settings"
+            onClick={() => router.push("/settings/user")}
+          />
+          <SidebarButton
+            textAlign="left"
             label="Logout"
             onClick={async () => {
               try {
@@ -109,11 +119,6 @@ export default function Sidebar() {
                 console.error("Error during logout:", error);
               }
             }}
-          />
-          <SidebarButton
-            textAlign="left"
-            label="Settings"
-            onClick={() => router.push("/settings/user")}
           />
         </SidebarSection>
       </div>
@@ -149,6 +154,22 @@ export default function Sidebar() {
             <SidebarSection title="Settings & Logout">
               <SidebarButton
                 textAlign="left"
+                label="Artist Dashboard"
+                onClick={() => {
+                  setShowMobileSidebar(false);
+                  router.push("/artist/dashboard");
+                }}
+              />
+              <SidebarButton
+                textAlign="left"
+                label="User Settings"
+                onClick={() => {
+                  setShowMobileSidebar(false);
+                  router.push("/settings/user");
+                }}
+              />
+              <SidebarButton
+                textAlign="left"
                 label="Logout"
                 onClick={async () => {
                   try {
@@ -165,14 +186,6 @@ export default function Sidebar() {
                     );
                     console.error("Error during logout:", error);
                   }
-                }}
-              />
-              <SidebarButton
-                textAlign="left"
-                label="Settings"
-                onClick={() => {
-                  setShowMobileSidebar(false);
-                  router.push("/settings/user");
                 }}
               />
             </SidebarSection>

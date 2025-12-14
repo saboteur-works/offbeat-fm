@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, ResourceTile, ResourceTileList } from "@mda/components";
 import { unbounded } from "@/fonts";
+import Link from "next/link";
+import { useAppSelector } from "../../lib/hooks";
 
 export default function Page() {
   const router = useRouter();
-
+  const user = useAppSelector((state) => state.user);
   const [tracks, setTracks] = useState([]);
   const fetchRandomTracks = async () => {
     const response = await axios.get(
@@ -28,6 +30,14 @@ export default function Page() {
           >
             Discover something you'll love
           </h1>
+          {user.loggedIn && (
+            <Link
+              href="/artist/dashboard"
+              className="w-full flex text-blue-500 hover:underline justify-center"
+            >
+              Want to add your own music?
+            </Link>
+          )}
         </header>
         <div>
           <ResourceTileList
