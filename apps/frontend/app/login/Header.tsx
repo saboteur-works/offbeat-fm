@@ -7,7 +7,6 @@ import axios from "axios";
 import { useEffect } from "react";
 import { setUser, unsetUser } from "../../lib/features/users/userSlice";
 import logOut from "../../actions/logout";
-import { boldonse } from "@/fonts";
 import useAuth from "../../swrHooks/useAuth";
 
 const Header = () => {
@@ -48,18 +47,27 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="flex items-center justify-between p-4 border-b border-gray-300">
-      <span
-        className={`text-2xl cursor-pointer hover:text-rose-500 ${boldonse.className}`}
+    <header className="flex items-center justify-between p-4 border-b border-ob-border">
+      <div
+        className="border-l-[4px] border-ob-red-border pl-6"
         onClick={() => {
           router.push("/");
         }}
       >
-        OffBeat
-      </span>
+        <span className="font-display font-bold tracking-wordmark text-ob-primary">
+          OffBeat
+        </span>
+        <span
+          className="font-mono font-normal text-ob-red"
+          style={{ fontSize: "0.52em", letterSpacing: "0.04em" }}
+        >
+          FM
+        </span>
+      </div>
       {name ? (
         <div className="flex items-center space-x-4">
           <Button
+            type="button"
             label="Logout"
             category="secondary"
             onClick={() => {

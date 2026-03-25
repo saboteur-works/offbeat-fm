@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className="bg-stone-950 text-white">
+        <body className="bg-ob-bg text-ob-primary">
           <div className="@container mx-auto flex flex-col h-screen">
             <Toaster />
             <Header />
@@ -26,7 +26,7 @@ export default function RootLayout({
               {children}
             </div>
             <footer className="border-t border-gray-300 py-4">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-ob-dim">
                 &copy; {new Date().getFullYear()} Jedai Saboteur. All rights
                 reserved.
               </p>
