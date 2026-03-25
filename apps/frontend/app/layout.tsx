@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang="en">
-        <body className="bg-ob-bg text-ob-primary">
+        <body>
           <div className="@container mx-auto flex flex-col h-screen">
             <Toaster />
             <Header />
