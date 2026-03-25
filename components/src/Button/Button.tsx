@@ -5,7 +5,7 @@ export interface ButtonProps {
     | void
     | ((e: React.FormEvent<HTMLFormElement>) => Promise<void>);
   type?: "button" | "submit" | "reset" | undefined;
-  category?: "primary" | "secondary" | "warning" | "danger";
+  category?: "primary" | "outline" | "destructive";
 }
 
 export const Button = ({
@@ -15,18 +15,18 @@ export const Button = ({
   category = "primary",
 }: ButtonProps) => {
   const categoryClasses = {
-    primary:
-      "shadow-md shadow-gray-700 hover:text-shadow-md/100 hover:bg-blue-800 hover:text-white text-blue-500 border border-blue-500 transition-colors px-4 py-2 rounded",
-    secondary:
-      "shadow-md shadow-gray-700 hover:text-shadow-md/100 hover:bg-gray-800 hover:text-white text-gray-300 border border-gray-700 transition-colors px-4 py-2 rounded",
-    warning:
-      "shadow-md shadow-yellow-700 hover:text-shadow-md/100 hover:bg-yellow-700 hover:text-white text-yellow-500 border border-yellow-500 transition-colors px-4 py-2 rounded",
-    danger:
-      "shadow-md shadow-red-700 hover:text-shadow-md/100 hover:bg-red-700 hover:text-white text-red-500 border border-red-500 transition-colors px-4 py-2 rounded",
+    primary: "bg-brand-red text-ob-primary hover:bg-[#C03838]",
+    outline:
+      "text-brand-mid border border-ob-border hover:border-brand-mid hover:text-white",
+    destructive: "border border-ob-red-border text-ob-red",
   };
 
   return (
-    <button className={categoryClasses[category]} onClick={onClick} type={type}>
+    <button
+      className={`font-mono ob-btn ${categoryClasses[category]}`}
+      onClick={onClick}
+      type={type}
+    >
       {label}
     </button>
   );
