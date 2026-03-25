@@ -156,10 +156,10 @@ export default function EditArtistForm({
               </div>
             ))}
           <div className="flex gap-4">
-            <Button label="Save Changes" type="submit" />
+            <Button label="Save Changes" type="submit" category="primary" />
             <Button
               label="Cancel"
-              category="secondary"
+              category="outline"
               onClick={() => setEditArtistDataAction?.(false)}
             />
           </div>

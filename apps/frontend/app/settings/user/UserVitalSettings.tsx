@@ -47,10 +47,14 @@ export default function UserVitalSettings({
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          <Button label="Update Settings" onClick={() => {}} />
+          <Button
+            label="Update Settings"
+            onClick={() => {}}
+            category="primary"
+          />
           <Button
             label="Back to Settings"
-            category="secondary"
+            category="outline"
             onClick={() => setCurrentPage && setCurrentPage("favorites")}
           />
         </form>
@@ -59,7 +63,7 @@ export default function UserVitalSettings({
         <p className="text-red-500 font-bold">***Danger Zone***</p>
         <Button
           label="Delete Account"
-          category="warning"
+          category="destructive"
           onClick={() => setPreDelete(true)}
         />
         <p className="text-sm text-gray-500 mt-2">
@@ -76,7 +80,7 @@ export default function UserVitalSettings({
             <div className="grid grid-cols-2 gap-4 mt-2">
               <Button
                 label="Yes, Delete My Account"
-                category="danger"
+                category="destructive"
                 onClick={async () => {
                   const deletionSuccess = await deleteUser(user.userId);
                   if (deletionSuccess) {
@@ -88,7 +92,11 @@ export default function UserVitalSettings({
                   }
                 }}
               />
-              <Button label="Cancel" onClick={() => setPreDelete(false)} />
+              <Button
+                label="Cancel"
+                onClick={() => setPreDelete(false)}
+                category="outline"
+              />
             </div>
           </div>
         )}

@@ -16,10 +16,10 @@ export default function AccessUnauthorized() {
       </p>
       <div className="flex gap-4">
         <Link href="/login">
-          <Button label="Go to Login Page" />
+          <Button label="Go to Login Page" category="outline" />
         </Link>
         <Link href="/discover">
-          <Button label="Go to Discover Page" />
+          <Button label="Go to Discover Page" category="outline" />
         </Link>
       </div>
     </div>

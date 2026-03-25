@@ -116,10 +116,6 @@ export default function HomePage() {
           </div>
         </section>
       </div>
-      {/* <Button
-        label="Discover New Music. Now."
-        onClick={() => router.push(`/discover`)}
-      /> */}
       <button
         className="text-white p-3 border-2 border-white rounded-lg mt-8 hover:bg-white hover:text-black transition"
         onClick={() => router.push(`/discover`)}

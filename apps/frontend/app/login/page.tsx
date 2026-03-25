@@ -83,7 +83,7 @@ export default function Page() {
             {errors.password && touched.password ? (
               <ErrorText message={errors.password} />
             ) : null}
-            <Button label="Login" type="submit" />
+            <Button label="Login" type="submit" category="outline" />
             {loginError && <ErrorText message={loginError} />}
           </form>
         )}

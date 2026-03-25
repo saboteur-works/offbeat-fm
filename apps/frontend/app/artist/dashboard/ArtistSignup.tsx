@@ -153,7 +153,11 @@ export default function ArtistSignup() {
                 </div>
               ))}
 
-            <Button label="Save Artist Profile" type="submit" />
+            <Button
+              label="Save Artist Profile"
+              type="submit"
+              category="primary"
+            />
           </form>
         )}
       </Formik>

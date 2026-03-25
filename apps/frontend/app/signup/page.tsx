@@ -104,7 +104,7 @@ export default function SignUpPage() {
               </a>
               !
             </p>
-            <Button type="submit" label="Sign Up" />
+            <Button type="submit" label="Sign Up" category="outline" />
           </form>
         )}
       </Formik>

@@ -53,19 +53,19 @@ export default function Page({
           <div className="flex flex-col gap-4 md:flex-row">
             <Button
               label="Go to Artist Page"
-              category="secondary"
+              category="outline"
               onClick={() => router.push(`/artists/${artistData.slug}`)}
             />
             {!editArtistData && (
               <Button
                 label="Edit Artist Details"
-                category="secondary"
+                category="outline"
                 onClick={() => setEditArtistData(true)}
               />
             )}
             <Button
               label="Delete Artist Profile"
-              category="warning"
+              category="destructive"
               onClick={() => setPrepareDeleteArtist(true)}
             />
           </div>
@@ -79,7 +79,7 @@ export default function Page({
                 <div className="flex gap-4">
                   <Button
                     label="Confirm Delete"
-                    category="danger"
+                    category="destructive"
                     onClick={async () => {
                       // Call delete artist action
                       const response = await axiosInstance.delete(
@@ -95,7 +95,7 @@ export default function Page({
                   />
                   <Button
                     label="Cancel"
-                    category="secondary"
+                    category="outline"
                     onClick={() => setPrepareDeleteArtist(false)}
                   />
                 </div>
@@ -117,6 +117,7 @@ export default function Page({
               onClick={() =>
                 router.push(`/artist/dashboard/${artistId}/add-track`)
               }
+              category="primary"
             />
             {artistTracks.length > 0 ? (
               <div className="flex flex-col w-full mt-4 rounded-md">
@@ -130,7 +131,7 @@ export default function Page({
                     <div className="space-x-4">
                       <Button
                         label="Edit"
-                        category="secondary"
+                        category="outline"
                         onClick={() =>
                           router.push(
                             `/artist/dashboard/${artistId}/edit-track/${track._id}`,

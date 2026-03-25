@@ -152,10 +152,11 @@ export default function AddTrackPage({
             ))}
 
             <div className="flex gap-4">
-              <Button label="Add Track" type="submit" />
+              <Button label="Add Track" type="submit" category="primary" />
               <Button
                 label="Cancel"
                 onClick={() => router.push(`/artist/dashboard/${artistId}`)}
+                category="outline"
               />
             </div>
           </form>

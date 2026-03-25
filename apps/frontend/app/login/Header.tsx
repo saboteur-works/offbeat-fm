@@ -69,7 +69,7 @@ const Header = () => {
           <Button
             type="button"
             label="Logout"
-            category="secondary"
+            category="outline"
             onClick={() => {
               handleLogout();
             }}
@@ -78,10 +78,10 @@ const Header = () => {
       ) : (
         <div className="flex items-center space-x-4">
           <Link href="/login">
-            <Button category="secondary" label="Login" />
+            <Button category="outline" label="Login" />
           </Link>
           <Link href="/signup">
-            <Button category="secondary" label="Sign Up" />
+            <Button category="outline" label="Sign Up" />
           </Link>
         </div>
       )}

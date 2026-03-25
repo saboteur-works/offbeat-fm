@@ -151,15 +151,15 @@ export default function EditTrackPage({
               ))}
 
             <div className="flex gap-4">
-              <Button label="Submit" type="submit" />
+              <Button label="Submit" type="submit" category="primary" />
               <Button
                 label="Delete Track"
-                category="secondary"
+                category="destructive"
                 onClick={() => setConfirmDelete(true)}
               />
               <Button
                 label="Cancel"
-                category="secondary"
+                category="outline"
                 onClick={() => router.push(`/artist/dashboard/${artistId}`)}
               />
             </div>
