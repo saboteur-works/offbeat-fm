@@ -1,10 +1,139 @@
+/* 
+OffBeat Utilities 
+
+Guidance:
+
+- Avoid rounded corners and drop shadows to maintain the sharp, graphic style.
+- Use the defined color palette and typography tokens for consistency.
+- Leverage the spacing scale for layout and component padding.
+- Focus on clean, bold designs that reflect the OffBeat-FM brand identity.
+*/
+
+@layer base {
+  body {
+    background-color: var(--color-brand-surface);
+    color: var(--color-ob-primary);
+  }
+
+  /* page titles; snug line height by default */
+  h1 {
+    font-size: var(--text-ob-h1);
+    line-height: var(--leading-snug);
+  }
+
+  /* section headings; snug line height by default */
+  h2 {
+    font-size: var(--text-ob-h2);
+    line-height: var(--leading-snug);
+  }
+
+  /* card titles, subsection headings; normal line height by default */
+  h3 {
+    font-size: var(--text-ob-h3);
+    line-height: var(--leading-normal);
+  }
+
+  /* primary body text; normal line height by default */
+  p {
+    font-family: var(--font-sans);
+    color: var(--color-ob-primary);
+    font-size: var(--text-ob-body);
+    line-height: var(--leading-normal);
+    letter-spacing: var(--tracking-body);
+  }
+
+  hr {
+    border-color: var(--color-ob-border);
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    background-color: var(--color-ob-surface2);
+    border: 1px solid var(--color-ob-border);
+    color: var(--color-ob-primary);
+    padding: var(--spacing-2);
+  }
+}
+
 @layer components {
+  /*  Branded Typography */
+
+  /* hero wordmark, major landing headings */
+  .text-hero-wordmark {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-ob-hero);
+    letter-spacing: var(--tracking-wordmark);
+  }
+
+  /* section heroes, large feature headings */
+  .text-display {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-ob-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .text-technical {
+    font-family: var(--font-mono);
+    color: var(--color-ob-secondary);
+    font-size: var(--text-ob-micro);
+    letter-spacing: var(--tracking-label);
+  }
   /* Base Button Style */
   .ob-btn {
     padding: 10px 20px;
     letter-spacing: var(--tracking-label-wide);
     font-size: var(--text-ob-label);
-    border-radius: var(--radius-md);
     text-transform: uppercase;
+  }
+
+  .genre-tag {
+    @apply inline-block px-2 py-[3px] border border-ob-border text-ob-secondary text-ob-micro;
+  }
+
+  .artist-card {
+    @apply flex gap-7 items-start border-l-bar border-ob-red-border pl-6;
+  }
+
+  .artist-card .artist-image {
+    @apply w-[72px] h-[72px] bg-brand-surface2 border border-ob-dim shrink-0 flex items-center justify-center;
+  }
+
+  .artist-card .artist-info {
+    @apply flex flex-col gap-1;
+  }
+
+  .artist-card .artist-info .artist-name {
+    @apply font-sans font-bold text-ob-primary text-ob-h2 tracking-heading;
+  }
+
+  .artist-card .artist-info .artist-meta {
+    @apply font-sans text-brand-mid text-ob-micro tracking-micro;
+  }
+
+  .artist-card .artist-info .artist-tags {
+    @apply flex gap-2 mt-2 flex-wrap;
+  }
+
+  .track-card {
+    @apply flex flex-col gap-2;
+  }
+  .track-card .track-art {
+    @apply w-60 aspect-square bg-brand-surface2 border border-ob-dim flex items-end relative overflow-hidden;
+  }
+  .track-card .track-art .art-accent {
+    @apply absolute left-0 top-0 h-full w-ob-card-stripe bg-ob-red;
+  }
+  .track-card .track-art .art-label {
+    @apply font-mono text-brand-white text-[8px] uppercase tracking-[0.1em] absolute bottom-2 left-2 bg-brand-red;
+  }
+  .track-card .track-title {
+    @apply font-mono font-bold text-ob-label text-white;
+  }
+  .track-card .track-artist {
+    @apply font-mono text-ob-micro text-brand-mid;
   }
 }
