@@ -23,7 +23,7 @@
  *   border-ob-red       Red accent border (card stripes, active tags)
  */
 
-@import "saboteur-base.css";
+/* @import "./saboteur-base.css"; */
 
 @theme {
   /* ── SURFACE COLORS ── */
