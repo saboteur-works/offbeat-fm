@@ -1,0 +1,10 @@
+@layer components {
+  /* Base Button Style */
+  .ob-btn {
+    padding: 10px 20px;
+    letter-spacing: var(--tracking-label-wide);
+    font-size: var(--text-ob-label);
+    border-radius: var(--radius-md);
+    text-transform: uppercase;
+  }
+}

@@ -1,18 +1,10 @@
 @import "tailwindcss";
+@import "./styles/saboteur-base.css";
+@import "./styles/offbeat-theme.css";
+@import "./styles/offbeat-utilities.css";
 @source "../../../components/";
 
-@layer base {
-  /* body {
-    background-color: black;
-    color: white;
-  }
-  a {
-    text-decoration: underline;
-    color: white;
-    &:hover {
-      text-decoration: none;
-    }
-  } */
+/* @layer base {
   input[type="text"],
   input[type="password"],
   input[type="email"],
@@ -26,7 +18,7 @@
     width: 100%;
     box-sizing: border-box;
   }
-}
+} */
 
 .marquee-container {
   width: 100%;

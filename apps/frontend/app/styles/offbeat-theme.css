@@ -56,20 +56,16 @@
   /* Note: --color-ob-red (#d44040) does not change in light mode */
 
   /* ── PRODUCT TYPE SCALE ── */
-  --font-size-ob-hero: clamp(
-    60px,
-    9vw,
-    88px
-  ); /* text-ob-hero    | Hero wordmark */
-  --font-size-ob-display: 48px; /* text-ob-display | Feature headings */
-  --font-size-ob-h1: 32px; /* text-ob-h1 */
-  --font-size-ob-h2: 22px; /* text-ob-h2 */
-  --font-size-ob-h3: 16px; /* text-ob-h3      | Card titles */
-  --font-size-ob-body: 14px; /* text-ob-body    | Primary body */
-  --font-size-ob-small: 13px; /* text-ob-small   | Secondary body */
-  --font-size-ob-label: 11px; /* text-ob-label   | UI labels */
-  --font-size-ob-micro: 10px; /* text-ob-micro   | Timestamps, metadata */
-  --font-size-ob-nano: 9px; /* text-ob-nano    | Minimum size */
+  --text-ob-hero: clamp(60px, 9vw, 88px); /* text-ob-hero    | Hero wordmark */
+  --text-ob-display: 48px; /* text-ob-display | Feature headings */
+  --text-ob-h1: 32px; /* text-ob-h1 */
+  --text-ob-h2: 22px; /* text-ob-h2 */
+  --text-ob-h3: 16px; /* text-ob-h3      | Card titles */
+  --text-ob-body: 14px; /* text-ob-body    | Primary body */
+  --text-ob-small: 13px; /* text-ob-small   | Secondary body */
+  --text-ob-label: 11px; /* text-ob-label   | UI labels */
+  --text-ob-micro: 10px; /* text-ob-micro   | Timestamps, metadata */
+  --text-ob-nano: 9px; /* text-ob-nano    | Minimum size */
 
   /* ── WORDMARK FM SUFFIX ── */
   /* The FM suffix is always this size relative to the wordmark */
@@ -89,8 +85,8 @@
   /* Primary CTA: bg-ob-red text-ob-primary */
   /* Outline: border-ob-border text-ob-secondary hover:border-ob-border-md hover:text-ob-primary */
   /* Destructive: border-ob-red-border text-ob-red (never fill) */
-  --padding-ob-btn-x: 20px; /* px-ob-btn | Button horizontal padding */
-  --padding-ob-btn-y: 10px; /* py-ob-btn | Button vertical padding */
+  --spacing-ob-btn-x: 20px; /* px-ob-btn | Button horizontal padding */
+  --spacing-ob-btn-y: 10px; /* py-ob-btn | Button vertical padding */
 
   /* Focus ring */
   --color-ob-focus-ring: rgba(
