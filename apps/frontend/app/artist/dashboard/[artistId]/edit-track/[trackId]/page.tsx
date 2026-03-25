@@ -3,7 +3,13 @@ import { useRouter } from "next/navigation";
 import { use, useState } from "react";
 import submitEditTrack from "../../../../../../actions/submitEditTrack";
 import { Formik, Field } from "formik";
-import { Button, ErrorText, ImgContainer } from "@mda/components";
+import {
+  Button,
+  DisplayTypography,
+  ErrorText,
+  FormLabel,
+  ImgContainer,
+} from "@mda/components";
 import axiosInstance from "../../../../../../util/axiosInstance";
 import useSWR from "swr";
 import deleteTrack from "../../../../../../actions/deleteTrack";
@@ -100,12 +106,21 @@ export default function EditTrackPage({
       >
         {({ handleSubmit, setFieldValue, values, errors, touched }) => (
           <form className="flex flex-col" onSubmit={handleSubmit}>
-            <label htmlFor="title">Title</label>
-            <Field id="title" type="text" name="title" />
+            <DisplayTypography text="Edit Track Details" />
+            <FormLabel>
+              <Field
+                id="title"
+                type="text"
+                name="title"
+                placeholder="Enter track title"
+                className="w-full"
+              />
+            </FormLabel>
             {errors.title && touched.title ? (
               <ErrorText message={errors.title} />
             ) : null}
             <label htmlFor="trackArt">Track Art</label>
+
             <input
               id="trackArt"
               type="file"
@@ -124,29 +139,44 @@ export default function EditTrackPage({
                   : undefined
               }
             />
-            <label>Genre</label>
-            <Field id="genre" as="select" name="genre">
-              <option value="">Select a genre</option>
-              {genres &&
-                genres.genres.map((genre: string) => (
-                  <option key={genre} value={genre}>
-                    {genre}
-                  </option>
-                ))}
-            </Field>
+            <FormLabel>
+              <Field id="genre" as="select" name="genre" className="w-full">
+                <option value="">Select a genre</option>
+                {genres &&
+                  genres.genres.map((genre: string) => (
+                    <option key={genre} value={genre}>
+                      {genre}
+                    </option>
+                  ))}
+              </Field>
+            </FormLabel>
             {errors.genre && touched.genre ? (
               <ErrorText message={errors.genre} />
             ) : null}
 
-            <label>ISRC</label>
-            <Field id="isrc" type="text" name="isrc" />
+            <FormLabel>
+              <Field
+                id="isrc"
+                type="text"
+                name="isrc"
+                placeholder="Enter ISRC"
+                className="w-full"
+              />
+            </FormLabel>
             <p>Links</p>
             {Object.keys(musicPlatformLinks)
               .filter((link) => link !== "Bandcamp")
               .map((link) => (
                 <div key={link} className="flex flex-col">
-                  <label htmlFor={link}>{link}</label>
-                  <Field id={link} type="text" name={`links.${link}`} />
+                  <FormLabel>
+                    <Field
+                      id={link}
+                      type="text"
+                      name={`links.${link}`}
+                      placeholder={`Enter your ${link} link`}
+                      className="w-full"
+                    />
+                  </FormLabel>
                 </div>
               ))}
 
