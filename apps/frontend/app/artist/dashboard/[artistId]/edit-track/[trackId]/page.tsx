@@ -167,27 +167,25 @@ export default function EditTrackPage({
               <div className="mt-4">
                 <p>Are you sure you want to delete this track?</p>
                 <div className="flex gap-4">
-                  <button
+                  <Button
                     type="button"
-                    className="bg-red-700 text-white p-2 mt-2 rounded"
+                    category="destructive"
+                    label="Yes, delete"
                     onClick={async () => {
                       await deleteTrack(trackId);
                       setConfirmDelete(false);
                       toast.success("Track deleted successfully");
                       router.push(`/artist/dashboard/${artistId}`);
                     }}
-                  >
-                    Yes, Delete
-                  </button>
-                  <button
+                  />
+                  <Button
                     type="button"
-                    className="bg-blue-500 text-white p-2 mt-2 rounded"
+                    label="Cancel"
+                    category="outline"
                     onClick={async () => {
                       setConfirmDelete(false);
                     }}
-                  >
-                    Cancel
-                  </button>
+                  />
                 </div>
               </div>
             )}
