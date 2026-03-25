@@ -2,7 +2,7 @@
 import { use } from "react";
 import submitTrack from "../../../../../actions/submitTrack";
 import { useRouter } from "next/navigation";
-import { Button, ErrorText, ImgContainer } from "@mda/components";
+import { Button, ErrorText, FormLabel, ImgContainer } from "@mda/components";
 import { Formik, Field } from "formik";
 import toast from "react-hot-toast";
 import useSWR from "swr";
@@ -89,23 +89,34 @@ export default function AddTrackPage({
         {({ handleSubmit, setFieldValue, values, errors, touched }) => (
           <form className="flex flex-col" onSubmit={handleSubmit}>
             <h1 className="text-2xl font-bold mb-4">Add New Track</h1>
-            <label htmlFor="title">Track Title</label>
-            <Field id="title" type="text" name="title" />
+            <FormLabel>
+              <Field
+                id="title"
+                type="text"
+                name="title"
+                placeholder="Enter track title"
+                className="w-full"
+              />
+            </FormLabel>
             {errors.title && touched.title ? (
               <ErrorText message={errors.title} />
             ) : null}
             <label htmlFor="trackArt">Track Art</label>
-            <input
-              id="trackArt"
-              type="file"
-              accept="image/*"
-              name="trackArt"
-              className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
-              onChange={async (event) => {
-                const resized = await resizeImage(event.currentTarget.files[0]);
-                setFieldValue("trackArt", resized);
-              }}
-            />
+            <FormLabel>
+              <input
+                id="trackArt"
+                type="file"
+                accept="image/*"
+                name="trackArt"
+                className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
+                onChange={async (event) => {
+                  const resized = await resizeImage(
+                    event.currentTarget.files[0],
+                  );
+                  setFieldValue("trackArt", resized);
+                }}
+              />
+            </FormLabel>
             <ImgContainer
               src={
                 values.trackArt
@@ -114,34 +125,44 @@ export default function AddTrackPage({
               }
             />
             <label htmlFor="genre">Genre</label>
-            <Field
-              id="genre"
-              as="select"
-              name="genre"
-              className="bg-gray-500 rounded py-2 px-3"
-            >
-              <option value="">Select a genre</option>
-              {genreData?.genres.map((genre: string) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </Field>
+            <FormLabel>
+              <Field id="genre" as="select" name="genre" className="w-full">
+                <option value="">Select a genre</option>
+                {genreData?.genres.map((genre: string) => (
+                  <option key={genre} value={genre}>
+                    {genre}
+                  </option>
+                ))}
+              </Field>
+            </FormLabel>
             {errors.genre && touched.genre ? (
               <ErrorText message={errors.genre} />
             ) : null}
             <label htmlFor="isrc">ISRC</label>
-            <Field id="isrc" type="text" name="isrc" />
+            <FormLabel>
+              <Field
+                id="isrc"
+                type="text"
+                name="isrc"
+                placeholder="Enter ISRC"
+                className="w-full"
+              />
+            </FormLabel>
             {errors.isrc && touched.isrc ? (
               <ErrorText message={errors.isrc} />
             ) : null}
             <p className="text-xl font-bold">Links</p>
             {Object.keys(musicPlatformLinks).map((platform) => (
               <div key={platform} className="flex flex-col mb-2">
-                <label htmlFor={`links.${platform}`} className="mb-2">
-                  {platform}
-                </label>
-                <Field id={platform} type="text" name={`links.${platform}`} />
+                <FormLabel>
+                  <Field
+                    id={platform}
+                    type="text"
+                    name={`links.${platform}`}
+                    placeholder={`Enter your ${platform} link`}
+                    className="w-full"
+                  />
+                </FormLabel>
                 {errors.links &&
                 touched.links &&
                 errors.links[platform] &&
