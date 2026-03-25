@@ -1,7 +1,13 @@
-import "../src/globals.css";
+import "../../apps/frontend/app/globals.css";
 import { Preview } from "@storybook/react-vite";
 const preview: Preview = {
   parameters: {
+    backgkrounds: {
+      options: {
+        // 👇 Default options
+        dark: { name: "Dark", value: "#0a0a0a" },
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
