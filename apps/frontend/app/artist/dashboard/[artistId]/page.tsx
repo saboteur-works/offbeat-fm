@@ -53,19 +53,19 @@ export default function Page({
           <div className="flex flex-col gap-4 md:flex-row">
             <Button
               label="Go to Artist Page"
-              category="secondary"
+              category="outline"
               onClick={() => router.push(`/artists/${artistData.slug}`)}
             />
             {!editArtistData && (
               <Button
                 label="Edit Artist Details"
-                category="secondary"
+                category="outline"
                 onClick={() => setEditArtistData(true)}
               />
             )}
             <Button
               label="Delete Artist Profile"
-              category="warning"
+              category="destructive"
               onClick={() => setPrepareDeleteArtist(true)}
             />
           </div>
@@ -79,7 +79,7 @@ export default function Page({
                 <div className="flex gap-4">
                   <Button
                     label="Confirm Delete"
-                    category="danger"
+                    category="destructive"
                     onClick={async () => {
                       // Call delete artist action
                       const response = await axiosInstance.delete(
@@ -95,7 +95,7 @@ export default function Page({
                   />
                   <Button
                     label="Cancel"
-                    category="secondary"
+                    category="outline"
                     onClick={() => setPrepareDeleteArtist(false)}
                   />
                 </div>
@@ -111,26 +111,31 @@ export default function Page({
             />
           )}
           <div id="artist-tracks" className="mt-4">
-            <p className="text-xl font-semibold mb-4">Artist Tracks</p>
-            <Button
-              label="Add New Track"
-              onClick={() =>
-                router.push(`/artist/dashboard/${artistId}/add-track`)
-              }
-            />
+            <div className="flex items-baseline justify-between mb-4">
+              <p className="text-ob-label tracking-label-wide text-ob-border-md mb-4">
+                Artist Tracks
+              </p>
+              <Button
+                label="+ Add Track"
+                onClick={() =>
+                  router.push(`/artist/dashboard/${artistId}/add-track`)
+                }
+                category="primary"
+              />
+            </div>
             {artistTracks.length > 0 ? (
-              <div className="flex flex-col w-full mt-4 rounded-md">
+              <div className="flex flex-col w-full mt-4">
                 {artistTracks.map((track) => (
                   <div
                     key={track._id}
-                    className="flex p-2 my-2 w-full items-center border border-gray-500 hover:bg-gray-900 rounded-md transition-colors"
+                    className="flex px-4 py-2 my-2 w-full items-center bg-brand-surface2 text-ob-small text-brand-mid"
                   >
                     {track.title}
                     <div className="grow" />
                     <div className="space-x-4">
                       <Button
                         label="Edit"
-                        category="secondary"
+                        category="outline"
                         onClick={() =>
                           router.push(
                             `/artist/dashboard/${artistId}/edit-track/${track._id}`,

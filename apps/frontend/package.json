@@ -13,6 +13,7 @@
     "formik": "^2.4.6",
     "image-blob-reduce": "^4.1.0",
     "joi": "^18.0.1",
+    "lucide-react": "^1.7.0",
     "next": "16.0.7",
     "pica": "^9.0.1",
     "postcss": "^8.5.6",

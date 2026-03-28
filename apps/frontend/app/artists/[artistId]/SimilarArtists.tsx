@@ -1,6 +1,5 @@
 import { IArtist } from "@common/types/src/types";
-import { SidebarButton } from "@mda/components";
-import Link from "next/link";
+import { ArtistRow } from "@mda/components";
 import { useRouter } from "next/navigation";
 interface SimilarArtistsProps {
   similarArtistsData?: IArtist[];
@@ -22,15 +21,24 @@ export default function SimilarArtists({
   }
   return (
     <div id="suggestions">
-      <h2 className="text-xl font-semibold mt-4">You might also like</h2>
       {similarArtistsData.length > 0 ? (
-        <div className="list-disc list-inside">
-          {similarArtistsData.map((artist) => (
+        <div className="flex flex-col gap-2">
+          {/* {similarArtistsData.map((artist) => (
             <SidebarButton
               label={artist.name}
               key={artist.slug}
               textAlign="left"
               onClick={() => router.push(`/artists/${artist.slug}`)}
+            />
+          ))} */}
+          {similarArtistsData.map((artist) => (
+            <ArtistRow
+              key={artist.slug}
+              avatarUrl={artist.artistArt}
+              name={artist.name}
+              genre={artist.genre}
+              artistSlug={artist.slug}
+              // onClick={() => router.push(`/artists/${artist.slug}`)}
             />
           ))}
         </div>

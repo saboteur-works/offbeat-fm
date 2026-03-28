@@ -1,6 +1,14 @@
 "use client";
+
 import { Formik, Field } from "formik";
-import { Button, ErrorText, ImgContainer } from "@mda/components";
+import {
+  BodyTypography,
+  Button,
+  ErrorText,
+  FormLabel,
+  ImgContainer,
+  TechnicalTypography,
+} from "@mda/components";
 import axiosInstance from "../../../util/axiosInstance";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -45,8 +53,9 @@ export default function ArtistSignup() {
 
   return (
     <div className="mt-4 overflow-y-auto">
-      <h1 className="text-2xl font-bold">Artist Setup</h1>
-      <p>By adding an artist, you assert that:</p>
+      <h1 className="">Artist Setup</h1>
+      <BodyTypography text="Welcome to the artist setup page! Please fill out the form below to create your artist profile. This information will help us showcase your music and connect you with fans." />
+      <TechnicalTypography text="By complete this form, you assert that:" />
       <ul className="list-disc list-inside">
         <li>
           You are the rightful owner or have the necessary rights to manage the
@@ -97,23 +106,33 @@ export default function ArtistSignup() {
             className="flex flex-col space-y-4 w-md mt-4"
             onSubmit={handleSubmit}
           >
-            <label htmlFor="artistName">Artist Name</label>
-            <Field id="artistName" type="text" name="artistName" />
+            <FormLabel>
+              <Field
+                id="artistName"
+                type="text"
+                name="artistName"
+                placeholder="Enter your artist name"
+                className="w-full"
+              />
+            </FormLabel>
             {errors.artistName && touched.artistName ? (
               <ErrorText message={errors.artistName} />
             ) : null}
-            <label htmlFor="artistArt">Artist Profile Image</label>
-            <input
-              id="artistArt"
-              type="file"
-              accept="image/*"
-              name="artistArt"
-              className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
-              onChange={async (event) => {
-                const resized = await resizeImage(event.currentTarget.files[0]);
-                setFieldValue("artistArt", resized);
-              }}
-            />
+            <FormLabel>
+              <input
+                id="artistArt"
+                type="file"
+                accept="image/*"
+                name="artistArt"
+                className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
+                onChange={async (event) => {
+                  const resized = await resizeImage(
+                    event.currentTarget.files[0],
+                  );
+                  setFieldValue("artistArt", resized);
+                }}
+              />
+            </FormLabel>
             <ImgContainer
               src={
                 values.artistArt
@@ -121,21 +140,28 @@ export default function ArtistSignup() {
                   : undefined
               }
             />
-            <label htmlFor="genre">Genre</label>
-            <Field id="genre" as="select" name="genre">
-              <option value="">Select a genre</option>
-              {genres.genres.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </Field>
+            <FormLabel>
+              <Field id="genre" as="select" name="genre" className="w-full">
+                <option value="">Select a genre</option>
+                {genres.genres.map((genre) => (
+                  <option key={genre} value={genre}>
+                    {genre}
+                  </option>
+                ))}
+              </Field>
+            </FormLabel>
             {errors.genre && touched.genre ? (
               <ErrorText message={errors.genre} />
             ) : null}
 
-            <label htmlFor="biography">Biography</label>
-            <Field as="textarea" name="biography" />
+            <FormLabel>
+              <Field
+                as="textarea"
+                name="biography"
+                placeholder="Enter your biography"
+                className="w-full"
+              />
+            </FormLabel>
             {errors.biography && touched.biography ? (
               <ErrorText message={errors.biography} />
             ) : null}
@@ -143,17 +169,23 @@ export default function ArtistSignup() {
               .filter((platform) => platform !== "Bandcamp")
               .map((platform) => (
                 <div key={platform} className="flex flex-col">
-                  <label htmlFor={`links.${platform}`}>{platform}</label>
-                  <Field
-                    type="text"
-                    name={`links.${platform}`}
-                    id={`links.${platform}`}
-                    placeholder={`Enter your ${platform} link`}
-                  />
+                  <FormLabel>
+                    <Field
+                      type="text"
+                      name={`links.${platform}`}
+                      id={`links.${platform}`}
+                      placeholder={`Enter your ${platform} link`}
+                      className="w-full"
+                    />
+                  </FormLabel>
                 </div>
               ))}
 
-            <Button label="Save Artist Profile" type="submit" />
+            <Button
+              label="Save Artist Profile"
+              type="submit"
+              category="primary"
+            />
           </form>
         )}
       </Formik>

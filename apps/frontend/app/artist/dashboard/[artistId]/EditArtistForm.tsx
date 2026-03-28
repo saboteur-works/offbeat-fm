@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import editArtistData from "../../../../actions/editArtistData";
-import { Button, ErrorText, ImgContainer } from "@mda/components";
+import { Button, ErrorText, FormLabel, ImgContainer } from "@mda/components";
 import { Formik, Field } from "formik";
 import toast from "react-hot-toast";
 import { socialPlatformLinks } from "@common/json-data";
@@ -94,25 +94,32 @@ export default function EditArtistForm({
           }}
           encType="multipart/form-data"
         >
-          <label htmlFor="artistName">Artist Name</label>
-          <Field type="text" name="artistName" id="artistName" />
+          <FormLabel>
+            <Field
+              type="text"
+              name="artistName"
+              id="artistName"
+              placeholder="Update your Artist Name"
+              className="w-full"
+            />
+          </FormLabel>
           {errors.artistName && touched.artistName ? (
             <ErrorText message={errors.artistName} />
           ) : null}
 
-          <label htmlFor="artistArt">Artwork</label>
-
-          <input
-            type="file"
-            name="artistArt"
-            id="artistArt"
-            accept="image/*"
-            className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
-            onChange={async (event) => {
-              const resized = await resizeImage(event.currentTarget.files[0]);
-              setFieldValue("artistArt", resized);
-            }}
-          />
+          <FormLabel>
+            <input
+              type="file"
+              name="artistArt"
+              id="artistArt"
+              accept="image/*"
+              className="text-transparent file:text-gray-300 file:border file:border-gray-700 file:transition-colors file:px-4 file:py-2 file:rounded file:hover:text-white file:hover:text-shadow-md/100 file:hover:bg-gray-800"
+              onChange={async (event) => {
+                const resized = await resizeImage(event.currentTarget.files[0]);
+                setFieldValue("artistArt", resized);
+              }}
+            />
+          </FormLabel>
           <ImgContainer
             src={
               artistData.artistArt
@@ -120,21 +127,30 @@ export default function EditArtistForm({
                 : undefined
             }
           />
-          <label htmlFor="genre">Genre</label>
-          <Field id="genre" as="select" name="genre">
-            <option value="">Select a genre</option>
-            {genres.genres.map((genre) => (
-              <option key={genre} value={genre}>
-                {genre}
-              </option>
-            ))}
-          </Field>
+          <FormLabel>
+            <Field id="genre" as="select" name="genre" className="w-full">
+              <option value="">Select a genre</option>
+              {!genresLoading &&
+                genres.genres.map((genre) => (
+                  <option key={genre} value={genre}>
+                    {genre}
+                  </option>
+                ))}
+            </Field>
+          </FormLabel>
           {errors.genre && touched.genre ? (
             <ErrorText message={errors.genre} />
           ) : null}
 
-          <label htmlFor="biography">Biography</label>
-          <Field as="textarea" name="biography" id="biography" />
+          <FormLabel>
+            <Field
+              as="textarea"
+              name="biography"
+              id="biography"
+              placeholder="Update your biography"
+              className="w-full"
+            />
+          </FormLabel>
           {errors.biography && touched.biography ? (
             <ErrorText message={errors.biography} />
           ) : null}
@@ -143,23 +159,25 @@ export default function EditArtistForm({
             .filter((platform) => platform !== "Bandcamp")
             .map((platform) => (
               <div key={platform} className="flex flex-col">
-                <label htmlFor={`links.${platform}`}>{platform}</label>
-                <Field
-                  type="text"
-                  name={`links.${platform}`}
-                  id={`links.${platform}`}
-                  placeholder={`Enter your ${platform} link`}
-                />
+                <FormLabel>
+                  <Field
+                    type="text"
+                    name={`links.${platform}`}
+                    id={`links.${platform}`}
+                    placeholder={`Enter your ${platform} link`}
+                    className="w-full"
+                  />
+                </FormLabel>
                 {errors.links && touched.links && errors.links[platform] ? (
                   <ErrorText message={errors.links[platform]} />
                 ) : null}
               </div>
             ))}
           <div className="flex gap-4">
-            <Button label="Save Changes" type="submit" />
+            <Button label="Save Changes" type="submit" category="primary" />
             <Button
               label="Cancel"
-              category="secondary"
+              category="outline"
               onClick={() => setEditArtistDataAction?.(false)}
             />
           </div>

@@ -13,7 +13,7 @@ const SidebarSection = ({ title, children }: SidebarSectionProps) => {
   return (
     <div className="mb-4">
       <div className="cursor-pointer" onClick={() => toggleSection()}>
-        <h3 className="text-lg font-semibold text-white mb-2 border-b border-gray-700 pb-2">
+        <h3 className="uppercase tracking-label text-brand-mid text-ob-label hover:text-brand-white">
           {title}
         </h3>
       </div>

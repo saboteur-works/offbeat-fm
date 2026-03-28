@@ -1,0 +1,137 @@
+/*
+ * offbeat-fm-theme.css
+ * OffBeat-FM product theme tokens for Tailwind v4.
+ * Extends saboteur-base.css — import base first.
+ *
+ * Usage:
+ *   @import "saboteur-base.css";
+ *   @import "offbeat-fm-theme.css";
+ *
+ * Token naming convention:
+ *   --color-ob-*   Color tokens specific to OffBeat-FM
+ *   --color-brand-* are inherited from saboteur-base.css
+ *
+ * Quick reference for AI assistants:
+ *   bg-ob-bg            Page background
+ *   bg-ob-surface       Card / panel surface
+ *   bg-ob-surface2      Nested / input surface
+ *   text-ob-primary     Primary text
+ *   text-ob-secondary   Muted / secondary text
+ *   text-ob-red         Signal red (FM suffix, active states, CTAs)
+ *   border-ob-dim       Default border
+ *   border-ob-rule      Divider line
+ *   border-ob-red       Red accent border (card stripes, active tags)
+ */
+
+/* @import "./saboteur-base.css"; */
+
+@theme {
+  /* ── SURFACE COLORS ── */
+  --color-ob-bg: #0a0a0a; /* bg-ob-bg       | Page background */
+  --color-ob-surface: #111110; /* bg-ob-surface  | Cards, panels */
+  --color-ob-surface2: #161614; /* bg-ob-surface2 | Nested elements, inputs */
+  --color-ob-surface3: #1c1c1a; /* bg-ob-surface3 | Deepest surface level */
+
+  /* ── TEXT COLORS ── */
+  --color-ob-primary: #f5f4f0; /* text-ob-primary   | Primary text */
+  --color-ob-secondary: #6a6864; /* text-ob-secondary | Muted labels, metadata */
+  --color-ob-dim: #3a3a38; /* text-ob-dim       | Very muted, near-invisible text */
+  --color-ob-red: #d44040; /* text-ob-red       | FM suffix, active states */
+
+  /* ── BORDER COLORS ── */
+  --color-ob-border: #2e2e2c; /* border-ob-border | Default 0.5px borders */
+  --color-ob-border-md: #3a3a38; /* border-ob-border-md | Hover / emphasis borders */
+  --color-ob-rule: #1a1a18; /* border-ob-rule   | Divider lines */
+  --color-ob-red-border: #d44040; /* border-ob-red-border | Active, accent borders */
+
+  /* ── LIGHT MODE OVERRIDES ── */
+  /* Use these with a [data-theme="light"] selector or prefers-color-scheme */
+  --color-ob-bg-light: #f5f4f0;
+  --color-ob-surface-light: #eceae3;
+  --color-ob-surface2-light: #e4e1da;
+  --color-ob-primary-light: #0a0a0a;
+  --color-ob-secondary-light: #7a7870;
+  --color-ob-border-light: #d0cec8;
+  --color-ob-rule-light: #d8d5ce;
+  /* Note: --color-ob-red (#d44040) does not change in light mode */
+
+  /* ── PRODUCT TYPE SCALE ── */
+  --text-ob-hero: clamp(60px, 9vw, 88px); /* text-ob-hero    | Hero wordmark */
+  --text-ob-display: 48px; /* text-ob-display | Feature headings */
+  --text-ob-h1: 32px; /* text-ob-h1 */
+  --text-ob-h2: 22px; /* text-ob-h2 */
+  --text-ob-h3: 16px; /* text-ob-h3      | Card titles */
+  --text-ob-body: 14px; /* text-ob-body    | Primary body */
+  --text-ob-small: 13px; /* text-ob-small   | Secondary body */
+  --text-ob-label: 11px; /* text-ob-label   | UI labels */
+  --text-ob-micro: 10px; /* text-ob-micro   | Timestamps, metadata */
+  --text-ob-nano: 9px; /* text-ob-nano    | Minimum size */
+
+  /* ── WORDMARK FM SUFFIX ── */
+  /* The FM suffix is always this size relative to the wordmark */
+  --font-size-ob-fm-suffix: 0.52em; /* Relative to parent wordmark size */
+  --tracking-ob-fm: 0.04em; /* tracking-ob-fm | FM suffix letter-spacing */
+
+  /* ── COMPONENT TOKENS ── */
+
+  /* Navigation bar */
+  --height-ob-nav: 52px; /* h-ob-nav      | Navigation bar height */
+  --height-ob-footer: 48px; /* h-ob-footer   | Footer height */
+
+  /* Track card */
+  --width-ob-card-stripe: 3px; /* w-ob-card-stripe | Left border accent on track art */
+
+  /* Buttons */
+  /* Primary CTA: bg-ob-red text-ob-primary */
+  /* Outline: border-ob-border text-ob-secondary hover:border-ob-border-md hover:text-ob-primary */
+  /* Destructive: border-ob-red-border text-ob-red (never fill) */
+  --spacing-ob-btn-x: 20px; /* px-ob-btn | Button horizontal padding */
+  --spacing-ob-btn-y: 10px; /* py-ob-btn | Button vertical padding */
+
+  /* Focus ring */
+  --color-ob-focus-ring: rgba(
+    212,
+    64,
+    64,
+    0.2
+  ); /* Used with ring-* utilities */
+
+  /* Tags / chips */
+  --color-ob-tag-active-text: #d44040;
+  --color-ob-tag-active-border: #d44040;
+  /* Default tag: border-ob-border text-ob-secondary */
+  /* Active tag:  border-ob-red-border text-ob-red opacity-80 */
+}
+
+/*
+ * ── UTILITY NOTES FOR AI ASSISTANTS ──
+ *
+ * WORDMARK CONSTRUCTION
+ * The OffBeat-FM wordmark is always two elements:
+ *   <span class="font-display font-bold tracking-wordmark text-ob-primary">OffBeat</span>
+ *   <span class="font-mono font-normal text-ob-red" style="font-size: 0.52em; letter-spacing: 0.04em;">FM</span>
+ * Wrap both in a container with: border-l-[4px] border-ob-red-border pl-6
+ * The FM element is ALWAYS text-ob-red regardless of light/dark mode.
+ *
+ * TRACK CARD PATTERN
+ * Art thumbnail container: relative aspect-square bg-ob-surface2 border border-ob-border
+ * Left stripe: absolute inset-y-0 left-0 w-[3px] bg-ob-red
+ * Genre label: absolute bottom-2 left-2 font-mono text-[8px] uppercase tracking-[0.1em] text-ob-secondary
+ * Title: font-sans font-bold text-[13px] tracking-[-0.01em] text-ob-primary
+ * Artist: font-mono text-[10px] tracking-micro text-ob-secondary
+ *
+ * ARTIST CARD LEFT BORDER
+ * border-l-[3px] border-ob-red-border pl-6
+ *
+ * SECTION EYEBROW
+ * font-mono text-ob-micro uppercase tracking-label-wide text-ob-red
+ *
+ * NAV ACTIVE STATE
+ * Active nav link: text-ob-primary (no underline, no border — color shift is sufficient)
+ * Default nav link: text-ob-secondary font-mono text-[10px] uppercase tracking-label
+ *
+ * WHAT NEVER GETS BLUE
+ * There is no blue in this system. If you reach for blue (links, focus, interactive),
+ * use text-ob-red for primary actions and text-ob-secondary / text-ob-primary for secondary.
+ * Default browser link blue must be overridden globally.
+ */

@@ -5,6 +5,7 @@ import Header from "./login/Header";
 import Sidebar from "./Sidebar";
 import { Toaster } from "react-hot-toast";
 import { Metadata } from "next";
+import { plexSans, plexCondensed, plexMono, plexSerif } from "@/fonts";
 export const metadata: Metadata = {
   title: "OffBeat - A music discovery platform",
   description: "Discover and enjoy music like never before with OffBeat.",
@@ -16,8 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <StoreProvider>
-      <html lang="en">
-        <body className="bg-stone-950 text-white">
+      <html
+        lang="en"
+        className={`${plexSans.variable} ${plexCondensed.variable} ${plexMono.variable} ${plexSerif.variable}`}
+      >
+        <body>
           <div className="@container mx-auto flex flex-col h-screen">
             <Toaster />
             <Header />
@@ -25,10 +29,9 @@ export default function RootLayout({
               <Sidebar />
               {children}
             </div>
-            <footer className="border-t border-gray-300 py-4">
-              <p className="text-sm text-gray-500">
-                &copy; {new Date().getFullYear()} Jedai Saboteur. All rights
-                reserved.
+            <footer className="border-t border-ob-border py-4">
+              <p className="text-sm text-ob-dim">
+                &copy; {new Date().getFullYear()} Saboteur. All rights reserved.
               </p>
             </footer>
           </div>

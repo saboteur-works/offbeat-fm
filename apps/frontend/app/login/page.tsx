@@ -6,13 +6,12 @@ import { useAppDispatch } from "../../lib/hooks";
 import { setUser } from "../../lib/features/users/userSlice";
 import { Formik, Field } from "formik";
 import axiosInstance from "../../util/axiosInstance";
-import { Button, ErrorText } from "@mda/components";
+import { Button, ErrorText, FormLabel } from "@mda/components";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { useState } from "react";
 import { authValidators } from "@common/validation";
 import { IUserLogin } from "@common/types/src/types";
-
 export default function Page() {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -65,25 +64,31 @@ export default function Page() {
               handleSubmit(e);
             }}
           >
-            <Field
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Username"
-            />
+            <FormLabel>
+              <Field
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Username"
+                className="w-full"
+              />
+            </FormLabel>
             {errors.username && touched.username ? (
               <ErrorText message={errors.username} />
             ) : null}
-            <Field
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Password"
-            />
+            <FormLabel>
+              <Field
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Password"
+                className="w-full"
+              />
+            </FormLabel>
             {errors.password && touched.password ? (
               <ErrorText message={errors.password} />
             ) : null}
-            <Button label="Login" type="submit" />
+            <Button label="Login" type="submit" category="outline" />
             {loginError && <ErrorText message={loginError} />}
           </form>
         )}

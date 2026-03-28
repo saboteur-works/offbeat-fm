@@ -47,36 +47,43 @@ export default function UserVitalSettings({
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          <Button label="Update Settings" onClick={() => {}} />
+          <Button
+            label="Update Settings"
+            onClick={() => {}}
+            category="primary"
+          />
           <Button
             label="Back to Settings"
-            category="secondary"
+            category="outline"
             onClick={() => setCurrentPage && setCurrentPage("favorites")}
           />
         </form>
       </div>
-      <div className="mt-8 border-t pt-4">
-        <p className="text-red-500 font-bold">***Danger Zone***</p>
+      <div className="mt-8 border-t border-ob-border-md pt-4">
+        <p className="text-ob-label uppercase text-brand-mid tracking-label mb-4">
+          Account Deletion
+        </p>
         <Button
           label="Delete Account"
-          category="warning"
+          category="destructive"
           onClick={() => setPreDelete(true)}
         />
-        <p className="text-sm text-gray-500 mt-2">
-          Once you delete your account, there is no going back. <br /> You will
-          lose all of your data and there will be no way to get it back. <br />{" "}
-          Please be certain.
+        <p className="text-sm text-brand-mid mt-2">
+          Permanently deletes your account, favorites, and all associated data.
+          This cannot be undone.
         </p>
         {preDelete && (
           <div className="mt-4">
-            <p className="text-red-600 font-bold">
-              Are you absolutely sure you want to delete your account? This
-              action cannot be undone.
+            <p className="text-brand-red">
+              Are you absolutely sure you want to delete your account?{" "}
+            </p>
+            <p className="text-brand-red">
+              <strong>This action cannot be undone.</strong>
             </p>
             <div className="grid grid-cols-2 gap-4 mt-2">
               <Button
                 label="Yes, Delete My Account"
-                category="danger"
+                category="destructive"
                 onClick={async () => {
                   const deletionSuccess = await deleteUser(user.userId);
                   if (deletionSuccess) {
@@ -88,7 +95,11 @@ export default function UserVitalSettings({
                   }
                 }}
               />
-              <Button label="Cancel" onClick={() => setPreDelete(false)} />
+              <Button
+                label="Cancel"
+                onClick={() => setPreDelete(false)}
+                category="outline"
+              />
             </div>
           </div>
         )}

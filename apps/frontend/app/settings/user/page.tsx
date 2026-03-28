@@ -24,15 +24,15 @@ export default function Page() {
       <div className="flex space-x-4 mb-4">
         <Button
           label="User Favorites"
-          category="secondary"
+          category="outline"
           onClick={() => setCurrentPage("favorites")}
         />
         <Link href="/artist/dashboard">
-          <Button label="Artist Settings" category="secondary" />
+          <Button label="Artist Settings" category="outline" />
         </Link>
         <Button
           label="User Data"
-          category="secondary"
+          category="outline"
           onClick={() => setCurrentPage("data")}
         />
       </div>

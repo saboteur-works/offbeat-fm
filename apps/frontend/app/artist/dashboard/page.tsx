@@ -32,8 +32,8 @@ export default function Page() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold">Artist Dashboard</h1>
-      <p>
+      <h1 className="text-ob-display font-bold">Artist Dashboard</h1>
+      <p className="mb-4">
         Welcome to your dashboard, where you can manage your music and profile.
       </p>
       {managedArtists.length === 0 && (
@@ -53,14 +53,14 @@ export default function Page() {
             <li>You will provide accurate and truthful information.</li>
           </ul>
           <Link href="/artist/dashboard/create-artist">
-            <Button label="Create Artist Profile" />
+            <Button label="Create Artist Profile" category="primary" />
           </Link>
         </div>
       )}
       {managedArtists.length > 0 && (
         <div>
           <Link href="/artist/dashboard/create-artist">
-            <Button label="Create new Artist Profile" />
+            <Button label="Create new Artist Profile" category="primary" />
           </Link>
           <h2 className="text-xl font-bold mt-4 mb-4">Your Managed Artists</h2>
           <div className="flex gap-4">
@@ -68,7 +68,7 @@ export default function Page() {
               <Button
                 key={artist._id}
                 label={artist.name}
-                category="secondary"
+                category="outline"
                 onClick={() => router.push(`/artist/dashboard/${artist._id}`)}
               />
             ))}

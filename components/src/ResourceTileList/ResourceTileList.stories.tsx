@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import ResourceTileList from "./ResourceTileList";
 import ResourceTile from "../ResourceTile/ResourceTile";
+import TrackCard from "../TrackCard/TrackCard";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -18,7 +19,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: Story = {
   args: {
     resourceTiles: [
@@ -61,6 +61,43 @@ export const Primary: Story = {
         mainText="Main Text"
         subText="Sub Text"
         onClick={() => {}}
+      />,
+    ],
+  },
+};
+
+export const NewCards: Story = {
+  args: {
+    resourceTiles: [
+      <TrackCard
+        title="Believe"
+        artist="The Neon Circuit"
+        genre="Electronic"
+        imageUrl="https://picsum.photos/512?random=1"
+      />,
+      <TrackCard
+        title="Believe"
+        artist="The Neon Circuit"
+        genre="Electronic"
+        imageUrl="https://picsum.photos/512?random=2"
+      />,
+      <TrackCard
+        title="Believe"
+        artist="The Neon Circuit"
+        genre="Electronic"
+        imageUrl="https://picsum.photos/512?random=1"
+      />,
+      <TrackCard
+        title="Believe"
+        artist="The Neon Circuit"
+        genre="Electronic"
+        imageUrl="https://picsum.photos/512?random=2"
+      />,
+      <TrackCard
+        title="Believe"
+        artist="The Neon Circuit"
+        genre="Electronic"
+        imageUrl="https://picsum.photos/512?random=1"
       />,
     ],
   },
