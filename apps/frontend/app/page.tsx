@@ -1,6 +1,10 @@
 "use client";
+import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@mda/components";
+import Link from "next/link";
+import { ArtistCard, Button, ResourceTileList, TrackCard } from "@mda/components";
+import useNewestTracks from "../swrHooks/useNewestTracks";
+import useNewestArtists from "../swrHooks/useNewestArtists";
 
 // export default function HomePage() {
 //   const router = useRouter();
@@ -125,8 +129,78 @@ import { Button } from "@mda/components";
 //   );
 // }
 
+type TrackResult = {
+  _id: string;
+  title: string;
+  artistName: string;
+  artistSlug: string;
+  genre: string;
+  trackArt?: string;
+  slug: string;
+};
+
+type ArtistResult = {
+  _id: string;
+  name: string;
+  genre: string;
+  slug: string;
+  artistArt?: string;
+};
+
 export default function HomePage() {
   const router = useRouter();
+  const { newestTracks, isLoading: isLoadingTracks } = useNewestTracks();
+  const { newestArtists, isLoading: isLoadingArtists } = useNewestArtists();
+
+  let recentTracksContent: ReactNode;
+  if (isLoadingTracks) {
+    recentTracksContent = <p>Loading...</p>;
+  } else if (newestTracks && newestTracks.length > 0) {
+    recentTracksContent = (
+      <ResourceTileList
+        resourceTiles={(newestTracks as TrackResult[]).map((track) => (
+          <TrackCard
+            key={track._id}
+            title={track.title}
+            artist={track.artistName}
+            genre={track.genre}
+            imageUrl={
+              track.trackArt
+                ? `data:image/jpeg;base64,${track.trackArt}`
+                : undefined
+            }
+            artistSlug={track.artistSlug}
+            trackSlug={track.slug}
+          />
+        ))}
+      />
+    );
+  } else {
+    recentTracksContent = <p>No tracks found.</p>;
+  }
+
+  let artistsContent: ReactNode;
+  if (isLoadingArtists) {
+    artistsContent = <p>Loading...</p>;
+  } else if (newestArtists && newestArtists.length > 0) {
+    artistsContent = (
+      <ResourceTileList
+        resourceTiles={(newestArtists as ArtistResult[]).map((artist) => (
+          <Link key={artist._id} href={`/artists/${artist.slug}`}>
+            <ArtistCard
+              name={artist.name}
+              meta={artist.genre}
+              genre={artist.genre}
+              imageUrl={artist.artistArt ? `data:image/jpeg;base64,${artist.artistArt}` : undefined}
+            />
+          </Link>
+        ))}
+      />
+    );
+  } else {
+    artistsContent = <p>No artists found.</p>;
+  }
+
   return (
     <div className="flex flex-col w-full">
       {/* <section id="beta-banner" className="bg-yellow-800 w-full p-2 mb-4">
@@ -162,15 +236,17 @@ export default function HomePage() {
         </section>
         <hr />
         <section className="p-8">
-          <p className="font-mono text-ob-label uppercase text-ob-secondary">
+          <p className="font-mono text-ob-label uppercase text-ob-secondary mb-4">
             Recently Added
           </p>
+          {recentTracksContent}
         </section>
         <hr />
         <section className="p-8">
-          <p className="font-mono text-ob-label uppercase text-ob-secondary">
+          <p className="font-mono text-ob-label uppercase text-ob-secondary mb-4">
             Artists
           </p>
+          {artistsContent}
         </section>
       </div>
     </div>

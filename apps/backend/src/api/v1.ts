@@ -9,6 +9,7 @@ import {
   getArtists,
   getById,
   getRandom,
+  getNewest as getNewestArtists,
   getSimilarArtists,
   updateArtist,
   setFavorite as setFavoriteArtist,
@@ -26,6 +27,7 @@ import {
   deleteTrack,
   getBySlugAndArtist,
   getRandom as getRandomTracks,
+  getNewest as getNewestTracks,
   getSimilarTracks,
   getTrack,
   getTracks,
@@ -75,6 +77,7 @@ router
   .get(getArtists)
   .post(isLoggedIn, upload.single("artistArt"), createNewArtist);
 router.route("/artists/random").get(getRandom);
+router.route("/artists/newest").get(getNewestArtists);
 router
   .route("/artists/:id")
   .get(getById)
@@ -104,6 +107,7 @@ router
   .route("/tracks")
   .post(isLoggedIn, upload.single("trackArt"), submitTrack);
 router.route("/tracks/random").get(getRandomTracks);
+router.route("/tracks/newest").get(getNewestTracks);
 router
   .route("/track/slug/:trackSlug/artist/:artistSlug")
   .get(getBySlugAndArtist);

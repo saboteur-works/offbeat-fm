@@ -80,6 +80,11 @@ export const getArtistsByIds = async (artistIds: string[]) => {
   ) as IArtist[];
 };
 
+export const getNewestArtists = async (count: number): Promise<IArtist[]> => {
+  const artists = await Artist.find().sort({ _id: -1 }).limit(count);
+  return artists.map((a) => a.toJSON({ flattenMaps: true })) as IArtist[];
+};
+
 export const getRandomArtists = async (
   count: number,
   excludeArtists?: string[],

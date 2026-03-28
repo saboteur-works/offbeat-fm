@@ -44,7 +44,7 @@ export default function ArtistPage({
     isLoading: isSimilarArtistsLoading,
   } = useSWR(
     () => {
-      return `/artist/${mainArtistData._id}/similar`;
+      return `/artist/${mainArtistData._id}/similar?includeArt=true`;
     },
     similarArtistsFetcher,
     {
@@ -147,6 +147,7 @@ export default function ArtistPage({
                   trackTitle={track.title}
                   artistSlug={mainArtistData.slug}
                   genre={track.genre}
+                  imgUrl={track.trackArt ? `data:image/jpeg;base64,${track.trackArt}` : undefined}
                 />
               ))}
             </div>
@@ -161,16 +162,14 @@ export default function ArtistPage({
               Find me on
             </p>
             <div>
-              {mainArtistData.links && mainArtistData.links.length > 0 ? (
-                mainArtistData.links.map((link) => (
-                  <ExternalLinkList
-                    key={link._id}
-                    links={link}
-                    linkContainerType="cloud"
-                    containerClasses="mb-4 mt-4"
-                    title={link.platform}
-                  />
-                ))
+              {mainArtistData.links &&
+              Object.keys(mainArtistData.links).length > 0 ? (
+                <ExternalLinkList
+                  links={mainArtistData.links}
+                  linkContainerType="cloud"
+                  containerClasses="mb-4 mt-4"
+                  title="Find me on"
+                />
               ) : (
                 <p>No links available.</p>
               )}

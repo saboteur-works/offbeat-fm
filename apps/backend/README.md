@@ -56,6 +56,35 @@ Tests can be run in-container via `docker compose -f compose.test.yml`. Note tha
 
 When running tests from the host machine, ensure that a MongoDB instance is available to the host. Note that this is **not recommended**, as the expected MongoDB host is `mongo`, not `localhost`.
 
+## Building a Production Docker Image
+
+The backend Dockerfile is at the repo root and requires the full monorepo as its build context. Run all commands from the **repository root**.
+
+**Build** — the `--platform linux/amd64` flag ensures compatibility with GCP Cloud Run:
+
+```sh
+docker buildx build \
+  --platform linux/amd64 \
+  -f Dockerfile.backend.prod \
+  --target backend-production \
+  -t mda-backend:latest \
+  .
+```
+
+**Tag:**
+
+```sh
+docker tag mda-backend:latest <DOCKERHUB_USERNAME>/mda-backend:<TAG>
+```
+
+**Push to Docker Hub:**
+
+```sh
+docker push <DOCKERHUB_USERNAME>/mda-backend:<TAG>
+```
+
+The image exposes port `3001`.
+
 ## Connecting to MongoDB Container
 
 ```sh

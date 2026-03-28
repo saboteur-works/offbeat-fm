@@ -3,7 +3,7 @@ import axiosInstance from "../util/axiosInstance";
 export default async function getRandomArtists(exclude?: string) {
   try {
     const response = await axiosInstance.get("/artists/random", {
-      params: { exclude },
+      params: { exclude, includeArt: true },
     });
     return response.data.data;
   } catch (error) {

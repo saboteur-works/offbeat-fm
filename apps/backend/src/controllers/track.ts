@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   getRandomTracks,
+  getNewestTracks,
   getTrackById,
   getTracksByGenre,
   getTracksByArtistId as getTracksByArtistIdAction,
@@ -134,7 +135,22 @@ const getSimilarTracks = async (req: Request, res: Response) => {
       .status(404)
       .json({ status: "ERROR", message: "No similar tracks found" });
   }
-  return res.status(200).json({ status: "OK", data: similarTracks });
+  const trackReturn = await similarTracks.reduce(
+    async (acc, t: ITrack) => {
+      const resolvedAcc = await acc;
+      if (t.trackArt) {
+        await getImageAtPath(t.trackArt).then((art) => {
+          if (art) {
+            t.trackArt = Buffer.from(art).toString("base64");
+          }
+        });
+      }
+      resolvedAcc.push(t);
+      return resolvedAcc;
+    },
+    [] as typeof similarTracks,
+  );
+  return res.status(200).json({ status: "OK", data: trackReturn });
 };
 
 const getTracksByArtistId = async (req: Request, res: Response) => {
@@ -158,6 +174,33 @@ const getRandom = async (req: Request, res: Response) => {
   const count = 8;
   try {
     const tracks = await getRandomTracks(count);
+    const trackReturn = await tracks.reduce(
+      async (acc, track: ITrack) => {
+        const resolvedAcc = await acc;
+        if (track.trackArt) {
+          await getImageAtPath(track.trackArt).then((art) => {
+            if (art) {
+              track.trackArt = Buffer.from(art).toString("base64");
+            }
+          });
+        }
+        resolvedAcc.push(track);
+        return resolvedAcc;
+      },
+      [] as typeof tracks,
+    );
+    res.status(200).json({ status: "OK", data: trackReturn });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({ status: "ERROR", message: error.message });
+    }
+  }
+};
+
+const getNewest = async (req: Request, res: Response) => {
+  const count = 4;
+  try {
+    const tracks = await getNewestTracks(count);
     const trackReturn = await tracks.reduce(
       async (acc, track: ITrack) => {
         const resolvedAcc = await acc;
@@ -251,6 +294,7 @@ export {
   deleteTrack,
   updateTrack,
   getRandom,
+  getNewest,
   getTracks,
   getSimilarTracks,
   setFavorite,
