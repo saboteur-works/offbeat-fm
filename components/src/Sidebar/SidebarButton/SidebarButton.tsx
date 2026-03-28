@@ -11,7 +11,7 @@ const SidebarButton = ({
 }: SidebarButtonProps) => {
   return (
     <button
-      className={`hover:bg-white hover:text-black text-shadow-md text-white transition-colors p-2 w-full text-${textAlign}`}
+      className={`hover:border-l-bar hover:border-ob-red-border p-2 w-full text-ob-body text-${textAlign}`}
       onClick={() => onClick && onClick()}
     >
       {label}

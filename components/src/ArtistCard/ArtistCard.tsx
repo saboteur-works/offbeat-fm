@@ -19,7 +19,7 @@ export default function ArtistCard({
   imageUrl,
 }: ArtistCardProps) {
   return (
-    <div className="artist-card">
+    <div className="artist-card mb-4">
       {/* <img src={imageUrl} alt={name} className="artist-image" /> */}
       <div className="artist-image">
         {imageUrl ? (

@@ -1,8 +1,12 @@
+import Link from "next/link";
+
 interface TrackCardProps {
   title?: string;
   artist?: string;
   genre?: string;
   imageUrl?: string;
+  artistSlug?: string;
+  trackSlug?: string;
 }
 
 export default function TrackCard({
@@ -10,9 +14,11 @@ export default function TrackCard({
   artist,
   genre,
   imageUrl,
+  artistSlug,
+  trackSlug,
 }: TrackCardProps) {
   return (
-    <div className="track-card">
+    <div className="track-card mb-4">
       <div className="track-art">
         {imageUrl && (
           <>
@@ -22,9 +28,24 @@ export default function TrackCard({
           </>
         )}
       </div>
-      {}
-      <p className="track-title">{title ?? ""}</p>
-      <p className="track-artist">{artist ?? "--"}</p>
+      {artistSlug && trackSlug ? (
+        <Link
+          href={`/track/${artistSlug}/${trackSlug}`}
+          className="track-title"
+        >
+          {title ?? ""}
+        </Link>
+      ) : (
+        <p className="track-title">{title ?? ""}</p>
+      )}
+
+      {artistSlug ? (
+        <Link href={`/artists/${artistSlug}`} className="artist-name">
+          {artist ?? ""}
+        </Link>
+      ) : (
+        <p className="artist-name">{artist ?? ""}</p>
+      )}
     </div>
   );
 }
