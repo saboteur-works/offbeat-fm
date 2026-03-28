@@ -111,6 +111,42 @@ export const getRandomTracks = async (count: number) => {
 };
 
 /**
+ * Retrieve the newest tracks from the database, sorted by insertion order.
+ * @param count The number of tracks to retrieve
+ * @returns An array of the newest tracks
+ */
+export const getNewestTracks = async (count: number) => {
+  const tracks = await Track.aggregate([
+    { $sort: { _id: -1 } },
+    { $limit: count },
+    { $addFields: { artistObjId: { $toObjectId: "$artistId" } } },
+    {
+      $lookup: {
+        from: "artists",
+        localField: "artistObjId",
+        foreignField: "_id",
+        as: "artist",
+      },
+    },
+    { $unwind: "$artist" },
+    {
+      $project: {
+        title: 1,
+        artistId: 1,
+        duration: 1,
+        isrc: 1,
+        genre: 1,
+        trackArt: 1,
+        slug: 1,
+        artistName: "$artist.name",
+        artistSlug: "$artist.slug",
+      },
+    },
+  ]).exec();
+  return tracks;
+};
+
+/**
  * Retrieve a list of tracks by genre.
  * @param genre The genre to search for
  * @param limit The maximum number of tracks to return

@@ -6,6 +6,7 @@ import {
   deleteArtist as deleteArtistAction,
   updateArtist as updateArtistAction,
   getRandomArtists,
+  getNewestArtists as getNewestArtistsAction,
   getSimilarArtists as getSimilarArtistsAction,
   getArtistsByIds,
   getArtistBySlug,
@@ -156,6 +157,18 @@ export const getRandom = async (req: Request, res: Response) => {
   const count = 5;
   try {
     const artists = await getRandomArtists(count, excludeArtists);
+    res.status(200).json({ status: "OK", data: artists });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ status: "ERROR", message: error.message });
+    }
+  }
+};
+
+export const getNewest = async (req: Request, res: Response) => {
+  const count = 4;
+  try {
+    const artists = await getNewestArtistsAction(count);
     res.status(200).json({ status: "OK", data: artists });
   } catch (error) {
     if (error instanceof Error) {
