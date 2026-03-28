@@ -148,7 +148,7 @@ Guidance:
   }
 
   .artist-header .artist-info .artist-name {
-    @apply text-ob-display font-bold tracking-display;
+    @apply font-bold text-ob-h2 md:text-ob-display md:tracking-display;
   }
 
   .artist-header .artist-info .artist-meta {
