@@ -8,6 +8,13 @@ import { useEffect } from "react";
 import { setUser, unsetUser } from "../../lib/features/users/userSlice";
 import logOut from "../../actions/logout";
 import useAuth from "../../swrHooks/useAuth";
+import { IBM_Plex_Sans } from "next/font/google";
+
+const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-ibm-plex-sans",
+});
 
 const Header = () => {
   const name = useAppSelector((state) => state.user.username);
@@ -48,22 +55,20 @@ const Header = () => {
 
   return (
     <header className="flex items-center justify-between p-4 border-b border-ob-border">
-      <div
-        className="border-l-[4px] border-ob-red-border pl-6"
-        onClick={() => {
-          router.push("/");
-        }}
+      <Link
+        href="/"
+        className={`${ibmPlexSans.className} border-l-[4px] border-ob-red-border pl-6 flex items-center text-ob-h1`}
       >
         <span className="font-display font-bold tracking-wordmark text-ob-primary">
           OffBeat
         </span>
         <span
-          className="font-mono font-normal text-ob-red"
+          className="font-mono font-normal text-ob-red text-ob-h3 align-middle"
           style={{ fontSize: "0.52em", letterSpacing: "0.04em" }}
         >
           FM
         </span>
-      </div>
+      </Link>
       {name ? (
         <div className="flex items-center space-x-4">
           <Button

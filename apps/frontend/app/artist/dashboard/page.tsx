@@ -32,8 +32,8 @@ export default function Page() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold">Artist Dashboard</h1>
-      <p>
+      <h1 className="text-ob-display font-bold">Artist Dashboard</h1>
+      <p className="mb-4">
         Welcome to your dashboard, where you can manage your music and profile.
       </p>
       {managedArtists.length === 0 && (

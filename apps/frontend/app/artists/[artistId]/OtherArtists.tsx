@@ -1,5 +1,4 @@
-import { SidebarButton } from "@mda/components";
-import Link from "next/link";
+import { ArtistRow } from "@mda/components";
 import { useRouter } from "next/navigation";
 interface OtherArtistsProps {
   otherArtistsData?: any;
@@ -21,18 +20,26 @@ export default function OtherArtists({
   }
   return (
     <div id="other-suggestions">
-      <h2 className="text-xl font-semibold mt-4">Other Artists</h2>
+      {/* <h2 className="text-xl font-semibold mt-4">Other Artists</h2> */}
       {otherArtistsData && otherArtistsData.length > 0 && (
-        <ul className="list-disc list-inside">
+        <div className="flex flex-col gap-2">
           {otherArtistsData.map((artist) => (
-            <SidebarButton
-              label={artist.name}
-              key={`other-artist-${artist.slug}`}
-              textAlign="left"
-              onClick={() => router.push(`/artists/${artist.slug}`)}
+            // <SidebarButton
+            //   label={artist.name}
+            //   key={`other-artist-${artist.slug}`}
+            //   textAlign="left"
+            //   onClick={() => router.push(`/artists/${artist.slug}`)}
+            // />
+            <ArtistRow
+              key={artist.slug}
+              avatarUrl={artist.artistArt}
+              name={artist.name}
+              genre={artist.genre}
+              artistSlug={artist.slug}
+              // onClick={() => router.push(`/artists/${artist.slug}`)}
             />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

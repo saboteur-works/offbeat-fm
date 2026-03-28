@@ -6,7 +6,7 @@ import setFavoriteArtist from "../../../actions/setFavoriteArtist";
 import { useAppSelector } from "../../../lib/hooks";
 import { useDispatch } from "react-redux";
 import { setFavoriteArtists } from "../../../lib/features/users/userSlice";
-import { ImgContainer, SidebarButton } from "@mda/components";
+import { ArtistHeader, TrackRow } from "@mda/components";
 import useSWR from "swr";
 import SimilarArtists from "./SimilarArtists";
 import getRandomArtists from "../../../actions/getRandomArtists";
@@ -14,6 +14,7 @@ import axiosInstance from "../../../util/axiosInstance";
 import OtherArtists from "./OtherArtists";
 import { ExternalLinkList } from "@mda/components";
 import { useRouter } from "next/navigation";
+import { HeartPlus, HeartMinus } from "lucide-react";
 
 const artistFetcher = (url: string) =>
   axiosInstance.get(url).then((res) => res.data.data);
@@ -100,57 +101,52 @@ export default function ArtistPage({
   }
 
   return (
-    <div id="artist-page" className="flex flex-col lg:flex-row grow py-2 px-4">
-      <div id="artist-details" className="mr-8 lg:w-8/12 lg:overflow-y-auto">
-        <h1 className="text-2xl font-bold">{mainArtistData.name}</h1>
-        <ImgContainer
-          src={
+    <div id="artist-page" className="flex flex-col py-2 px-4 w-full">
+      <div id="artist-details" className="mr-8 ">
+        <ArtistHeader
+          name={mainArtistData.name}
+          meta={mainArtistData.meta}
+          genre={mainArtistData.genre}
+          totalTracks={mainArtistData.tracks.length}
+          imageUrl={
             mainArtistData.artistArt
               ? `data:image/jpeg;base64,${mainArtistData.artistArt}`
               : undefined
           }
-          alt={mainArtistData.name}
         />
+
         {user.loggedIn ? (
-          <div onClick={handleFavoriteClick} className="cursor-pointer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className={`size-5 hover:fill-pink-700 ${artistFavorited ? "fill-pink-600" : "fill-gray-400"}`}
-            >
-              <path d="m9.653 16.915-.005-.003-.019-.01a20.759 20.759 0 0 1-1.162-.682 22.045 22.045 0 0 1-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 0 1 8-2.828A4.5 4.5 0 0 1 18 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 0 1-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 0 1-.69.001l-.002-.001Z" />
-            </svg>
+          <div onClick={handleFavoriteClick} className="cursor-pointer mb-4">
+            {artistFavorited ? (
+              <HeartMinus className="size-5 hover:fill-pink-700 fill-pink-600" />
+            ) : (
+              <HeartPlus className="size-5 hover:fill-pink-700 fill-gray-400" />
+            )}
           </div>
         ) : (
           <p className="italic">Log in to add this artist to your favorites</p>
         )}
         <section id="artist-biography">
-          <h2 className="text-xl font-semibold">About this Artist</h2>
-          <p>{mainArtistData.biography}</p>
+          <p className="p-4 text-brand-mid italic">
+            {mainArtistData.biography ?? "No biography available."}
+          </p>
         </section>
-        <ExternalLinkList
-          links={mainArtistData.links}
-          linkContainerType="cloud"
-          containerClasses="mb-4 mt-4"
-          title="Find me on"
-        />
+        <hr />
       </div>
-      <div className="grow lg:border-l lg:border-gray-300 lg:pl-8 lg:overflow-y-auto">
-        <div id="artist-tracks">
-          <h2 className="text-xl font-semibold">
+      <div className="mt-4">
+        <div id="artist-tracks mt-4">
+          <p className="text-ob-label tracking-label uppercase mb-2 text-ob-red">
             Tracks by {mainArtistData.name}
-          </h2>
+          </p>
           {mainArtistData.tracks && mainArtistData.tracks.length > 0 ? (
-            <div className="list-disc list-inside">
+            <div className="mb-8">
               {mainArtistData.tracks.map((track) => (
-                <SidebarButton
-                  label={track.title}
+                <TrackRow
                   key={track._id}
-                  textAlign="left"
-                  onClick={() =>
-                    router.push(`/track/${mainArtistData.slug}/${track.slug}`)
-                  }
+                  trackSlug={track.slug}
+                  trackTitle={track.title}
+                  artistSlug={mainArtistData.slug}
+                  genre={track.genre}
                 />
               ))}
             </div>
@@ -158,16 +154,46 @@ export default function ArtistPage({
             <p>No tracks available.</p>
           )}
         </div>
-        <SimilarArtists
-          similarArtistsData={similarArtistsData}
-          similarArtistsError={similarArtistsError}
-          isSimilarArtistsLoading={isSimilarArtistsLoading}
-        />
-        <OtherArtists
-          otherArtistsData={otherArtistsData}
-          otherArtistsError={otherArtistsError}
-          isOtherArtistsLoading={isOtherArtistsLoading}
-        />
+        <hr />
+        <div className="flex flex-col md:flex-row gap-8">
+          <div id="artist-links" className="w-full md:w-1/2">
+            <p className="text-ob-label tracking-label uppercase mb-2 text-ob-red">
+              Find me on
+            </p>
+            <div>
+              {mainArtistData.links && mainArtistData.links.length > 0 ? (
+                mainArtistData.links.map((link) => (
+                  <ExternalLinkList
+                    key={link._id}
+                    links={link}
+                    linkContainerType="cloud"
+                    containerClasses="mb-4 mt-4"
+                    title={link.platform}
+                  />
+                ))
+              ) : (
+                <p>No links available.</p>
+              )}
+            </div>
+          </div>
+          <div id="artist-suggestions" className="mt-4 w-full md:w-1/2">
+            <p className="text-ob-label tracking-label uppercase mb-2 text-ob-red">
+              You might also like
+            </p>
+            <div className="gap-2 flex flex-col">
+              <SimilarArtists
+                similarArtistsData={similarArtistsData}
+                similarArtistsError={similarArtistsError}
+                isSimilarArtistsLoading={isSimilarArtistsLoading}
+              />
+              <OtherArtists
+                otherArtistsData={otherArtistsData}
+                otherArtistsError={otherArtistsError}
+                isOtherArtistsLoading={isOtherArtistsLoading}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

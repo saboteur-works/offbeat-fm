@@ -59,23 +59,26 @@ export default function UserVitalSettings({
           />
         </form>
       </div>
-      <div className="mt-8 border-t pt-4">
-        <p className="text-red-500 font-bold">***Danger Zone***</p>
+      <div className="mt-8 border-t border-ob-border-md pt-4">
+        <p className="text-ob-label uppercase text-brand-mid tracking-label mb-4">
+          Account Deletion
+        </p>
         <Button
           label="Delete Account"
           category="destructive"
           onClick={() => setPreDelete(true)}
         />
-        <p className="text-sm text-gray-500 mt-2">
-          Once you delete your account, there is no going back. <br /> You will
-          lose all of your data and there will be no way to get it back. <br />{" "}
-          Please be certain.
+        <p className="text-sm text-brand-mid mt-2">
+          Permanently deletes your account, favorites, and all associated data.
+          This cannot be undone.
         </p>
         {preDelete && (
           <div className="mt-4">
-            <p className="text-red-600 font-bold">
-              Are you absolutely sure you want to delete your account? This
-              action cannot be undone.
+            <p className="text-brand-red">
+              Are you absolutely sure you want to delete your account?{" "}
+            </p>
+            <p className="text-brand-red">
+              <strong>This action cannot be undone.</strong>
             </p>
             <div className="grid grid-cols-2 gap-4 mt-2">
               <Button

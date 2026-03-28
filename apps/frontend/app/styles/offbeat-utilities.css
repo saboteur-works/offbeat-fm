@@ -42,8 +42,34 @@ Guidance:
     letter-spacing: var(--tracking-body);
   }
 
+  p a {
+    font-family: var(--font-mono);
+    color: var(--color-ob-secondary);
+    font-size: var(--text-ob-label);
+    letter-spacing: var(--tracking-body);
+    text-decoration: underline;
+  }
+
+  a:hover {
+    color: var(--color-ob-primary);
+  }
+
   hr {
     border-color: var(--color-ob-border);
+  }
+
+  ul {
+    list-style: disc;
+    padding-left: var(--spacing-6);
+    margin-top: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+  }
+
+  li {
+    font-family: var(--font-mono);
+    color: var(--color-ob-secondary);
+    font-size: var(--text-ob-micro);
+    letter-spacing: var(--tracking-label);
   }
 
   input[type="text"],
@@ -54,6 +80,15 @@ Guidance:
     border: 1px solid var(--color-ob-border);
     color: var(--color-ob-primary);
     padding: var(--spacing-2);
+    margin-bottom: var(--spacing-4);
+  }
+
+  select {
+    background-color: var(--color-ob-surface2);
+    border: 1px solid var(--color-ob-border);
+    color: var(--color-ob-primary);
+    padding: var(--spacing-2);
+    margin-bottom: var(--spacing-4);
   }
 }
 
@@ -89,9 +124,39 @@ Guidance:
     font-size: var(--text-ob-label);
     text-transform: uppercase;
   }
-
+  .icon-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-ob-primary);
+    text-decoration: none;
+    padding: 2px 10px;
+  }
   .genre-tag {
     @apply inline-block px-2 py-[3px] border border-ob-border text-ob-secondary text-ob-micro;
+  }
+
+  .artist-header {
+    @apply flex gap-7 items-start border-l-bar border-ob-red-border pl-6;
+  }
+
+  .artist-header .artist-image {
+    @apply w-[120px] h-[120px] bg-brand-surface2 border border-ob-dim shrink-0 flex items-center justify-center;
+  }
+
+  .artist-header .artist-info {
+    @apply flex flex-col gap-1;
+  }
+
+  .artist-header .artist-info .artist-name {
+    @apply text-ob-display font-bold tracking-display;
+  }
+
+  .artist-header .artist-info .artist-meta {
+    @apply font-sans text-brand-mid text-ob-micro tracking-micro;
+  }
+
+  .artist-header .artist-info .artist-tags {
+    @apply flex gap-2 mt-2 flex-wrap;
   }
 
   .artist-card {

@@ -111,14 +111,18 @@ export default function Page({
             />
           )}
           <div id="artist-tracks" className="mt-4">
-            <p className="text-xl font-semibold mb-4">Artist Tracks</p>
-            <Button
-              label="Add New Track"
-              onClick={() =>
-                router.push(`/artist/dashboard/${artistId}/add-track`)
-              }
-              category="primary"
-            />
+            <div className="flex items-baseline justify-between mb-4">
+              <p className="text-ob-label tracking-label-wide text-ob-border-md mb-4">
+                Artist Tracks
+              </p>
+              <Button
+                label="+ Add Track"
+                onClick={() =>
+                  router.push(`/artist/dashboard/${artistId}/add-track`)
+                }
+                category="primary"
+              />
+            </div>
             {artistTracks.length > 0 ? (
               <div className="flex flex-col w-full mt-4 rounded-md">
                 {artistTracks.map((track) => (

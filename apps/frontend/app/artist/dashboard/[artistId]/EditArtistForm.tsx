@@ -130,11 +130,12 @@ export default function EditArtistForm({
           <FormLabel>
             <Field id="genre" as="select" name="genre" className="w-full">
               <option value="">Select a genre</option>
-              {genres.genres.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
+              {!genresLoading &&
+                genres.genres.map((genre) => (
+                  <option key={genre} value={genre}>
+                    {genre}
+                  </option>
+                ))}
             </Field>
           </FormLabel>
           {errors.genre && touched.genre ? (

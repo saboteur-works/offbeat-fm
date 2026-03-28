@@ -2,8 +2,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, ResourceTile, ResourceTileList } from "@mda/components";
-import { unbounded } from "@/fonts";
+import {
+  Button,
+  DisplayTypography,
+  ResourceTileList,
+  TrackCard,
+} from "@mda/components";
 
 export default function Page() {
   const router = useRouter();
@@ -21,25 +25,23 @@ export default function Page() {
 
   return (
     <div className="flex flex-col md:flex-row grow py-2 px-4">
-      <div className="flex-grow md:px-4 py-2 md:overflow-y-auto">
-        <header className="px-4">
-          <h1
-            className={`text-xl font-bold md:text-3xl mb-2 text-center ${unbounded.className}`}
-          >
-            Discover something you'll love
-          </h1>
+      <div className="grow md:px-4 py-2 md:overflow-y-auto">
+        <header className="px-4 mb-4">
+          <DisplayTypography text="Discover something you'll love." />
         </header>
         <div>
           <ResourceTileList
             resourceTiles={tracks.map((track) => (
-              <ResourceTile
+              <TrackCard
                 key={track._id}
-                mainText={track.title}
-                subText={track.artistName}
+                title={track.title}
+                artist={track.artistName}
                 imageUrl={track.trackArt}
-                onClick={() =>
-                  router.push(`/track/${track.artistSlug}/${track.slug}`)
-                }
+                artistSlug={track.artistSlug}
+                trackSlug={track.slug}
+                // onClick={() =>
+                //   router.push(`/track/${track.artistSlug}/${track.slug}`)
+                // }
               />
             ))}
           />
