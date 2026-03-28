@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { authValidators } from "@common/validation";
 import { IUserLogin } from "@common/types/src/types";
+import { mutate } from "swr";
 export default function Page() {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -47,6 +48,7 @@ export default function Page() {
           try {
             const res = await axiosInstance.post("/auth/log-in", values);
             dispatch(setUser(res.data.user));
+            mutate("/auth/check-auth", { authenticated: true, user: res.data.user }, { revalidate: false });
             toast.success("Login successful!");
             router.push("/discover");
           } catch (error) {
