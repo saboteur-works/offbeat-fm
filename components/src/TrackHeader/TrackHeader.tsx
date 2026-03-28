@@ -10,6 +10,11 @@ interface TrackHeaderProps {
   onClick?: () => void;
 }
 
+/**
+ * TrackHeader component displays the track's title, artist name (with a link to the artist's page),
+ * genre, and duration. It also includes an image for the track if provided. The entire header is
+ * clickable, triggering the onClick function if it exists.
+ */
 export default function TrackHeader({
   trackTitle,
   artistName,
@@ -17,22 +22,16 @@ export default function TrackHeader({
   imgUrl,
   genre,
   duration,
-  onClick,
 }: TrackHeaderProps) {
   return (
-    <div
-      className={`flex gap-6 border-l-2 px-2.5 py-3.5 border-brand-red`}
-      onClick={() => {
-        if (onClick) {
-          onClick();
-        }
-      }}
-    >
+    <div className={`flex gap-6 border-l-2 px-2.5 py-3.5 border-brand-red`}>
       <div className="w-[120px] h-[120px] bg-brand-surface2 border border-ob-dim shrink-0 flex items-center justify-center">
         {imgUrl && <img src={imgUrl} alt="Track Art" />}
       </div>
       <div>
-        <p className="text-ob-display font-bold leading-tight">{trackTitle}</p>
+        <p className="text-ob-h2 font-bold md:text-ob-display  leading-tight">
+          {trackTitle}
+        </p>
         <Link
           href={`/artists/${artistSlug}`}
           className="font-mono text-brand-mid"

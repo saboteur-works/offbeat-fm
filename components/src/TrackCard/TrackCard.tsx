@@ -9,6 +9,9 @@ interface TrackCardProps {
   trackSlug?: string;
 }
 
+/**
+ * Music track card component that displays the track's title, artist, genre, and album art.
+ */
 export default function TrackCard({
   title,
   artist,
