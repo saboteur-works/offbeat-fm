@@ -124,11 +124,11 @@ export default function Page({
               />
             </div>
             {artistTracks.length > 0 ? (
-              <div className="flex flex-col w-full mt-4 rounded-md">
+              <div className="flex flex-col w-full mt-4">
                 {artistTracks.map((track) => (
                   <div
                     key={track._id}
-                    className="flex p-2 my-2 w-full items-center border border-gray-500 hover:bg-gray-900 rounded-md transition-colors"
+                    className="flex px-4 py-2 my-2 w-full items-center bg-brand-surface2 text-ob-small text-brand-mid"
                   >
                     {track.title}
                     <div className="grow" />

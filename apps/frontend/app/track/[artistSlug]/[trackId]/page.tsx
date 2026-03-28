@@ -118,14 +118,13 @@ export default function TrackPage({
           You might also like
         </h2>
         {similarTracks && similarTracks.length > 0 ? (
-          <div className="flex md:flex-wrap md:flex-col gap-4">
+          <div className="flex flex-col md:flex-wrap md:flex-row gap-4">
             {similarTracks.map((track) => (
               <TrackRow
                 key={track._id}
                 trackSlug={track.slug}
                 trackTitle={track.title}
                 artistSlug={track.artistSlug}
-                width="quarter"
               />
             ))}
           </div>
