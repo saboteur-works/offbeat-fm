@@ -135,7 +135,22 @@ const getSimilarTracks = async (req: Request, res: Response) => {
       .status(404)
       .json({ status: "ERROR", message: "No similar tracks found" });
   }
-  return res.status(200).json({ status: "OK", data: similarTracks });
+  const trackReturn = await similarTracks.reduce(
+    async (acc, t: ITrack) => {
+      const resolvedAcc = await acc;
+      if (t.trackArt) {
+        await getImageAtPath(t.trackArt).then((art) => {
+          if (art) {
+            t.trackArt = Buffer.from(art).toString("base64");
+          }
+        });
+      }
+      resolvedAcc.push(t);
+      return resolvedAcc;
+    },
+    [] as typeof similarTracks,
+  );
+  return res.status(200).json({ status: "OK", data: trackReturn });
 };
 
 const getTracksByArtistId = async (req: Request, res: Response) => {

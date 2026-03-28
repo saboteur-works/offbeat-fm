@@ -44,7 +44,7 @@ export default function ArtistPage({
     isLoading: isSimilarArtistsLoading,
   } = useSWR(
     () => {
-      return `/artist/${mainArtistData._id}/similar`;
+      return `/artist/${mainArtistData._id}/similar?includeArt=true`;
     },
     similarArtistsFetcher,
     {
@@ -147,6 +147,7 @@ export default function ArtistPage({
                   trackTitle={track.title}
                   artistSlug={mainArtistData.slug}
                   genre={track.genre}
+                  imgUrl={track.trackArt ? `data:image/jpeg;base64,${track.trackArt}` : undefined}
                 />
               ))}
             </div>

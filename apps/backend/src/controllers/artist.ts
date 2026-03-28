@@ -11,7 +11,7 @@ import {
   getArtistsByIds,
   getArtistBySlug,
 } from "../db/actions/Artist";
-import { IArtist } from "@common/types/src/types";
+import { IArtist, ITrack } from "@common/types/src/types";
 import Joi from "joi";
 import { addFavoriteArtist, removeFavoriteArtist } from "../db/actions/User";
 import { getImageAtPath } from "../db/actions/Storage";
@@ -136,8 +136,22 @@ export const getBySlug = async (req: Request, res: Response) => {
         artistArt = Buffer.from(art).toString("base64");
       }
     }
+    let tracks = (artist?.tracks ?? []) as unknown as (ITrack & { _id: unknown })[];
+    if (artist && returnArtistArt && tracks.length > 0) {
+      tracks = await Promise.all(
+        tracks.map(async (track) => {
+          if (track.trackArt) {
+            const art = await getImageAtPath(track.trackArt);
+            if (art) {
+              return { ...track, trackArt: Buffer.from(art).toString("base64") };
+            }
+          }
+          return track;
+        }),
+      );
+    }
     if (artist) {
-      res.status(200).json({ status: "OK", data: { ...artist, artistArt } });
+      res.status(200).json({ status: "OK", data: { ...artist, artistArt, tracks } });
     } else {
       res.status(404).json({ status: "ERROR", message: "Artist not found" });
     }
@@ -148,16 +162,32 @@ export const getBySlug = async (req: Request, res: Response) => {
   }
 };
 
+const convertArtistsArt = async (artists: IArtist[]) => {
+  return Promise.all(
+    artists.map(async (artist) => {
+      if (artist.artistArt) {
+        const art = await getImageAtPath(artist.artistArt);
+        if (art) {
+          return { ...artist, artistArt: Buffer.from(art).toString("base64") };
+        }
+      }
+      return artist;
+    }),
+  );
+};
+
 export const getRandom = async (req: Request, res: Response) => {
   const excludeArtists: string[] = req.query.exclude
     ? ((Array.isArray(req.query.exclude)
         ? req.query.exclude
         : [req.query.exclude]) as string[])
     : [];
+  const returnArtistArt = req.query.includeArt === "true";
   const count = 5;
   try {
     const artists = await getRandomArtists(count, excludeArtists);
-    res.status(200).json({ status: "OK", data: artists });
+    const data = returnArtistArt ? await convertArtistsArt(artists) : artists;
+    res.status(200).json({ status: "OK", data });
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ status: "ERROR", message: error.message });
@@ -166,10 +196,12 @@ export const getRandom = async (req: Request, res: Response) => {
 };
 
 export const getNewest = async (req: Request, res: Response) => {
+  const returnArtistArt = req.query.includeArt === "true";
   const count = 4;
   try {
     const artists = await getNewestArtistsAction(count);
-    res.status(200).json({ status: "OK", data: artists });
+    const data = returnArtistArt ? await convertArtistsArt(artists) : artists;
+    res.status(200).json({ status: "OK", data });
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ status: "ERROR", message: error.message });
@@ -183,10 +215,12 @@ export const getSimilarArtists = async (req: Request, res: Response) => {
     res.status(400).json({ status: "ERROR", message: "Artist ID is required" });
     return;
   }
+  const returnArtistArt = req.query.includeArt === "true";
   const count = 5;
   try {
     const similarArtists = await getSimilarArtistsAction(artistId, count);
-    res.status(200).json({ status: "OK", data: similarArtists });
+    const data = returnArtistArt ? await convertArtistsArt(similarArtists) : similarArtists;
+    res.status(200).json({ status: "OK", data });
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ status: "ERROR", message: error.message });

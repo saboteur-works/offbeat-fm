@@ -144,6 +144,7 @@ type ArtistResult = {
   name: string;
   genre: string;
   slug: string;
+  artistArt?: string;
 };
 
 export default function HomePage() {
@@ -190,7 +191,7 @@ export default function HomePage() {
               name={artist.name}
               meta={artist.genre}
               genre={artist.genre}
-              imageUrl=""
+              imageUrl={artist.artistArt ? `data:image/jpeg;base64,${artist.artistArt}` : undefined}
             />
           </Link>
         ))}

@@ -125,6 +125,7 @@ export default function TrackPage({
                 trackSlug={track.slug}
                 trackTitle={track.title}
                 artistSlug={track.artistSlug}
+                imgUrl={track.trackArt ? `data:image/jpeg;base64,${track.trackArt}` : undefined}
               />
             ))}
           </div>

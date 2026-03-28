@@ -36,7 +36,7 @@ export default function Page() {
                 key={track._id}
                 title={track.title}
                 artist={track.artistName}
-                imageUrl={track.trackArt}
+                imageUrl={track.trackArt ? `data:image/jpeg;base64,${track.trackArt}` : undefined}
                 artistSlug={track.artistSlug}
                 trackSlug={track.slug}
                 // onClick={() =>

@@ -32,7 +32,7 @@ export default function OtherArtists({
             // />
             <ArtistRow
               key={artist.slug}
-              avatarUrl={artist.artistArt}
+              avatarUrl={artist.artistArt ? `data:image/jpeg;base64,${artist.artistArt}` : undefined}
               name={artist.name}
               genre={artist.genre}
               artistSlug={artist.slug}
