@@ -22,15 +22,27 @@ export default function TrackCard({
 }: TrackCardProps) {
   return (
     <div className="track-card mb-4">
-      <div className="track-art">
-        {imageUrl && (
-          <>
-            <img src={imageUrl} alt={`${title} Album Art`} />
-            <div className="art-accent" />
-            <span className="art-label">{genre ?? "--"}</span>
-          </>
-        )}
-      </div>
+      {artistSlug && trackSlug ? (
+        <Link href={`/track/${artistSlug}/${trackSlug}`} className="track-art">
+          {imageUrl && (
+            <>
+              <img src={imageUrl} alt={`${title} Album Art`} />
+              <div className="art-accent" />
+              <span className="art-label">{genre ?? "--"}</span>
+            </>
+          )}
+        </Link>
+      ) : (
+        <div className="track-art">
+          {imageUrl && (
+            <>
+              <img src={imageUrl} alt={`${title} Album Art`} />
+              <div className="art-accent" />
+              <span className="art-label">{genre ?? "--"}</span>
+            </>
+          )}
+        </div>
+      )}
       {artistSlug && trackSlug ? (
         <Link
           href={`/track/${artistSlug}/${trackSlug}`}

@@ -69,6 +69,11 @@ const Header = () => {
           FM
         </span>
       </Link>
+      <nav>
+        <Link href="/discover" className="text-ob-primary text-sm font-medium">
+          Discover
+        </Link>
+      </nav>
       {name ? (
         <div className="flex items-center space-x-4">
           <Button
@@ -85,7 +90,7 @@ const Header = () => {
           <Link href="/login">
             <Button category="outline" label="Login" />
           </Link>
-          <Link href="/signup">
+          <Link href="/signup" className="hidden md:flex">
             <Button category="outline" label="Sign Up" />
           </Link>
         </div>

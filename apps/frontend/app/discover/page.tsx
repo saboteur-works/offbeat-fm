@@ -9,10 +9,20 @@ import {
   TrackCard,
 } from "@mda/components";
 
+type TrackResult = {
+  _id: string;
+  title: string;
+  artistName: string;
+  artistSlug: string;
+  genre: string;
+  trackArt?: string;
+  slug: string;
+};
+
 export default function Page() {
   const router = useRouter();
 
-  const [tracks, setTracks] = useState([]);
+  const [tracks, setTracks] = useState<TrackResult[]>([]);
   const fetchRandomTracks = async () => {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/tracks/random`,
@@ -36,12 +46,10 @@ export default function Page() {
                 key={track._id}
                 title={track.title}
                 artist={track.artistName}
+                genre={track.genre}
                 imageUrl={track.trackArt ? `data:image/jpeg;base64,${track.trackArt}` : undefined}
                 artistSlug={track.artistSlug}
                 trackSlug={track.slug}
-                // onClick={() =>
-                //   router.push(`/track/${track.artistSlug}/${track.slug}`)
-                // }
               />
             ))}
           />

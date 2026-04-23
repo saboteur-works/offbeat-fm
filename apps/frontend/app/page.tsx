@@ -230,7 +230,7 @@ export default function HomePage() {
             <Button
               label="Add your music"
               category="outline"
-              onClick={() => router.push(`/artist/dashboard`)}
+              onClick={() => router.push(`/add-your-music`)}
             />
           </div>
         </section>
