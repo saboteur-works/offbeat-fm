@@ -9,6 +9,9 @@
   },
   "compilerOptions": {
     "outDir": "./dist",
+    "noEmit": false,
+    "sourceMap": true,
+    "declaration": true,
     "esModuleInterop": true,
     "module": "nodenext",
     "target": "esnext",

@@ -29,6 +29,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "typecheck": "yarn g:typecheck",
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },

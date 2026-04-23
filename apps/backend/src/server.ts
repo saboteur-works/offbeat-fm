@@ -52,9 +52,21 @@ const limiter = rateLimit({
 const app = express();
 
 app.use(helmet());
+const allowedOrigins = (
+  process.env.CLIENT_URLS || process.env.CLIENT_URL || "http://localhost:3000"
+)
+  .split(",")
+  .map((u) => u.trim());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. server-to-server, curl)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origin ${origin} not allowed by CORS`));
+      }
+    },
     credentials: true,
   }),
 );
@@ -81,6 +93,9 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      // COOKIE_DOMAIN should be ".offbeat-fm.com" in production (leading dot
+      // makes the cookie valid for all subdomains including admin.offbeat-fm.com)
+      domain: process.env.COOKIE_DOMAIN,
     },
   }),
 );

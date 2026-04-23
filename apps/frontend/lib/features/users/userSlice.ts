@@ -4,6 +4,7 @@ const initialState = {
   username: null,
   userId: null,
   email: null,
+  role: null as "user" | "admin" | null,
   loggedIn: false,
   favoriteTracks: [] as string[],
   favoriteArtists: [] as string[],
@@ -18,6 +19,7 @@ const usersSlice = createSlice({
       state.username = action.payload.username;
       state.loggedIn = true;
       state.userId = action.payload._id;
+      state.role = action.payload.role ?? "user";
       state.favoriteTracks = action.payload.favoriteTracks || [];
       state.email = action.payload.email;
       state.favoriteArtists = action.payload.favoriteArtists || [];
@@ -27,6 +29,7 @@ const usersSlice = createSlice({
       state.username = null;
       state.loggedIn = false;
       state.userId = null;
+      state.role = null;
       state.favoriteTracks = [];
       state.email = null;
       state.favoriteArtists = [];

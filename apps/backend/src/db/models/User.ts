@@ -17,6 +17,11 @@ const UserSchema: Schema<IUserDoc, Model<IUserDoc>> = new Schema(
       enum: ["pending", "active", "inactive", "banned"],
       default: "pending",
     },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
     password: {
       type: String,
       set: (ptPassword: string) => bcrypt.hashSync(ptPassword, 10),

@@ -42,9 +42,19 @@ import {
   deleteUser,
 } from "../controllers/user";
 import isLoggedIn from "../middleware/isLoggedIn";
+import isAdmin from "../middleware/isAdmin";
 import Multer from "multer";
 import { getGenres } from "../controllers/genre";
 import checkUserAccountStatus from "../middleware/checkUserAccountStatus";
+import {
+  listEditorialProfiles,
+  getEditorialProfile,
+  createProfile,
+  updateProfile,
+  deleteProfile,
+} from "../controllers/admin/editorial";
+import { listUsers, updateUserStatus } from "../controllers/admin/users";
+import { claimProfile } from "../controllers/editorialClaim";
 
 const upload = Multer({
   storage: Multer.memoryStorage(),
@@ -128,5 +138,26 @@ router.route("/user/:userId").delete(isLoggedIn, deleteUser);
 router
   .route("/users/:userId/managed-artists")
   .get(isLoggedIn, getManagedArtists);
+
+// Editorial Claim (public-facing, auth required)
+router
+  .route("/editorial/:id/claim")
+  .post(isLoggedIn, checkUserAccountStatus, claimProfile);
+
+// Admin Endpoints (isAdmin guard applied to all)
+router
+  .route("/admin/editorial")
+  .get(isLoggedIn, isAdmin, listEditorialProfiles)
+  .post(isLoggedIn, isAdmin, createProfile);
+router
+  .route("/admin/editorial/:id")
+  .get(isLoggedIn, isAdmin, getEditorialProfile)
+  .patch(isLoggedIn, isAdmin, updateProfile)
+  .delete(isLoggedIn, isAdmin, deleteProfile);
+
+router.route("/admin/users").get(isLoggedIn, isAdmin, listUsers);
+router
+  .route("/admin/users/:userId/status")
+  .patch(isLoggedIn, isAdmin, updateUserStatus);
 
 export default router;
