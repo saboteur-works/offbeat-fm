@@ -48,6 +48,7 @@ services:
       DB_NAME: music-discovery-app-dev
       PORT: 3001
       CLIENT_URL: http://localhost:3000
+      CLIENT_URLS: http://localhost:3000, http://admin.localhost:3000
     ports:
       - 3001:3001
     networks:
@@ -79,6 +80,7 @@ services:
 
     environment:
       NODE_ENV: development
+      BACKEND_URL: http://backend:3001/api/v1
     ports:
       - 3000:3000
     networks:
