@@ -138,6 +138,8 @@ interface IUser {
   favoriteTracks: string[];
   favoriteAlbums: string[];
   favoriteArtists: string[];
+  emailVerificationToken?: string;
+  emailVerificationExpiry?: Date;
 }
 
 /**

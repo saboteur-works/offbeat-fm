@@ -49,6 +49,8 @@ const UserSchema: Schema<IUserDoc, Model<IUserDoc>> = new Schema(
         ref: "Track",
       },
     ],
+    emailVerificationToken: { type: String },
+    emailVerificationExpiry: { type: Date },
   },
   {
     methods: {

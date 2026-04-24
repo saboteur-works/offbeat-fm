@@ -2,7 +2,14 @@ import express from "express";
 import passport from "passport";
 import { ensureLoggedIn } from "connect-ensure-login";
 import { healthCheck } from "../controllers/health";
-import { checkAuth, login, logout, signUp } from "../controllers/auth";
+import {
+  checkAuth,
+  login,
+  logout,
+  resendVerification,
+  signUp,
+  verifyEmail,
+} from "../controllers/auth";
 import {
   createNewArtist,
   deleteArtist,
@@ -80,6 +87,8 @@ router
     login,
   );
 router.route("/auth/log-out").get(ensureLoggedIn(), logout);
+router.route("/auth/verify-email/:token").get(verifyEmail);
+router.route("/auth/resend-verification").post(resendVerification);
 
 // Artist Endpoints
 router
