@@ -45,7 +45,7 @@ services:
       NODE_ENV: development
       DB_HOST: mongo
       DB_PORT: 27017
-      DB_NAME: music-discovery-app-dev
+      DB_NAME: offbeat-fm-dev
       PORT: 3001
       CLIENT_URL: http://localhost:3000
       CLIENT_URLS: http://localhost:3000, http://admin.localhost:3000

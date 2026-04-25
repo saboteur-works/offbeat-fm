@@ -17,6 +17,8 @@ export const createUser = async (user: IUserSignup) => {
       username: user.username,
       email: user.email,
       password: user.password,
+      accountStatus: "pending",
+      role: "user",
     });
     await newUser.save();
     return newUser;

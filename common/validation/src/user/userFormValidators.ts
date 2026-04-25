@@ -16,3 +16,9 @@ export const signUpSchema: ObjectSchema<IUserSignup> = object({
     .oneOf([ref("password"), null], "Passwords must match")
     .required("Password confirmation is required."),
 });
+
+export const resendVerificationSchema: ObjectSchema<{ email: string }> = object(
+  {
+    email: string().email("Invalid email").required("Email is required"),
+  },
+);
