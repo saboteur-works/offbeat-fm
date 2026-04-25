@@ -11,36 +11,12 @@ import api from "./api/v1";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import { RedisStore } from "connect-redis";
-import { createClient } from "redis";
 import { readFileSync } from "fs";
-let redisClient;
-let redisStore;
+import { redisClient } from "./lib/redis";
 
-if (process.env.NODE_ENV === "production") {
-  redisClient = createClient({
-    username:
-      process.env.REDIS_USERNAME ||
-      readFileSync("/run/secrets/REDIS_USERNAME", "utf-8").trim(),
-    password:
-      process.env.REDIS_PASSWORD ||
-      readFileSync("/run/secrets/REDIS_PASSWORD", "utf-8").trim(),
-    socket: {
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
-    },
-  });
-  redisClient.connect().catch(console.error);
-  redisClient.on("connect", () => {
-    console.log("Connected to redis");
-  });
-  redisClient.on("ready", () => {
-    console.log("Redis connection is ready");
-  });
-  redisStore = new RedisStore({
-    client: redisClient,
-    prefix: "mda:",
-  });
-}
+const redisStore = redisClient
+  ? new RedisStore({ client: redisClient, prefix: "mda:" })
+  : null;
 
 const appName = "OffBeat";
 const limiter = rateLimit({
@@ -84,8 +60,7 @@ if (app.get("env") === "production") {
 }
 app.use(
   expressSession({
-    store:
-      process.env.NODE_ENV === "production" ? redisStore : new MemoryStore({}),
+    store: redisStore ?? new MemoryStore({}),
     secret:
       process.env.SESSION_SECRET || readFileSync("/run/secrets/SESSION_SECRET"),
     resave: false,

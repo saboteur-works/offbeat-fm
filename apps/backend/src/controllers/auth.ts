@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { Request, Response } from "express";
+import { redisClient } from "../lib/redis";
 import {
   clearVerificationToken,
   createUser,
@@ -15,6 +16,19 @@ import { userFormValidators } from "@common/validation";
 import { sendVerificationEmail } from "../utils/email";
 
 const TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
+
+const isEmailResendRateLimited = async (email: string): Promise<boolean> => {
+  if (!redisClient) return false;
+  try {
+    const key = `rl:resend-verify:email:${email.toLowerCase().trim()}`;
+    const count = await redisClient.incr(key);
+    if (count === 1) await redisClient.expire(key, 3600);
+    return count > 3;
+  } catch (err) {
+    console.error("Redis rate limit check failed:", err);
+    return false;
+  }
+};
 
 const generateVerificationToken = () => {
   const raw = crypto.randomBytes(32).toString("hex");
@@ -87,12 +101,15 @@ export const resendVerification = async (req: Request, res: Response) => {
 
     const user = await getUserByEmail(email);
     if (user && user.accountStatus === "pending") {
-      const { raw, hash } = generateVerificationToken();
-      const expiry = new Date(Date.now() + TOKEN_TTL_MS);
-      await setVerificationToken(user.id, hash, expiry);
+      const rateLimited = await isEmailResendRateLimited(email);
+      if (!rateLimited) {
+        const { raw, hash } = generateVerificationToken();
+        const expiry = new Date(Date.now() + TOKEN_TTL_MS);
+        await setVerificationToken(user.id, hash, expiry);
 
-      const verificationUrl = `${getClientUrl()}/verify-email/${raw}`;
-      await sendVerificationEmail(user.email, verificationUrl);
+        const verificationUrl = `${getClientUrl()}/verify-email/${raw}`;
+        await sendVerificationEmail(user.email, verificationUrl);
+      }
     }
 
     return res.status(200).json(genericResponse);

@@ -50,6 +50,7 @@ import {
 } from "../controllers/user";
 import isLoggedIn from "../middleware/isLoggedIn";
 import isAdmin from "../middleware/isAdmin";
+import { resendVerificationIpLimiter } from "../middleware/resendVerificationLimiter";
 import Multer from "multer";
 import { getGenres } from "../controllers/genre";
 import checkUserAccountStatus from "../middleware/checkUserAccountStatus";
@@ -88,7 +89,9 @@ router
   );
 router.route("/auth/log-out").get(ensureLoggedIn(), logout);
 router.route("/auth/verify-email/:token").get(verifyEmail);
-router.route("/auth/resend-verification").post(resendVerification);
+router
+  .route("/auth/resend-verification")
+  .post(resendVerificationIpLimiter, resendVerification);
 
 // Artist Endpoints
 router
