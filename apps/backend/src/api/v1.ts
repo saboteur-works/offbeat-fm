@@ -63,6 +63,10 @@ import {
 } from "../controllers/admin/editorial";
 import { listUsers, updateUserStatus } from "../controllers/admin/users";
 import { claimProfile } from "../controllers/editorialClaim";
+import {
+  getBySlug as getEditorialBySlug,
+  setFavorite as setFavoriteEditorial,
+} from "../controllers/editorial";
 
 const upload = Multer({
   storage: Multer.memoryStorage(),
@@ -151,7 +155,9 @@ router
   .route("/users/:userId/managed-artists")
   .get(isLoggedIn, getManagedArtists);
 
-// Editorial Claim (public-facing, auth required)
+// Editorial (public-facing)
+router.route("/editorial/slug/:slug").get(getEditorialBySlug);
+router.route("/editorial/:id/favorite").post(isLoggedIn, setFavoriteEditorial);
 router
   .route("/editorial/:id/claim")
   .post(isLoggedIn, checkUserAccountStatus, claimProfile);

@@ -53,13 +53,14 @@ export const createProfile = async (req: Request, res: Response) => {
 
 export const updateProfile = async (req: Request, res: Response) => {
   try {
-    const { name, genre, biography, editorialNotes, verificationStatus } =
+    const { name, genre, biography, editorialNotes, verificationStatus, links } =
       req.body as {
         name?: string;
         genre?: string;
         biography?: string;
         editorialNotes?: string;
         verificationStatus?: "unverified" | "pending" | "verified";
+        links?: Record<string, string>;
       };
     const updated = await updateEditorialProfile(req.params["id"] ?? "", {
       name,
@@ -67,6 +68,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       biography,
       editorialNotes,
       verificationStatus,
+      links,
     });
     if (!updated) return res.status(404).json({ message: "Not found" });
     return res.status(200).json({ data: updated });

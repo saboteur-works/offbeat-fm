@@ -9,9 +9,12 @@ const EditorialProfileSchema: Schema<
 > = new Schema(
   {
     name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
     genre: { type: String, required: true },
     biography: { type: String },
     artistArt: { type: String },
+    links: { type: Map, of: String, required: false },
+    favoritedBy: { type: [String], default: [] },
     editorialNotes: { type: String },
     verificationStatus: {
       type: String,
@@ -29,6 +32,29 @@ const EditorialProfileSchema: Schema<
   },
   { timestamps: true },
 );
+
+EditorialProfileSchema.pre("validate", function (next) {
+  if (!this.slug || this.isModified("name")) {
+    this.slug = this.name
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+  }
+  next();
+});
+
+EditorialProfileSchema.pre("findOneAndUpdate", function (next) {
+  const update = this.getUpdate() as IEditorialProfile;
+  if (update && update.name) {
+    update.slug = String(update.name)
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+    this.setUpdate(update);
+  }
+  next();
+});
 
 const EditorialProfile = model<IEditorialProfileDoc, Model<IEditorialProfileDoc>>(
   "EditorialProfile",

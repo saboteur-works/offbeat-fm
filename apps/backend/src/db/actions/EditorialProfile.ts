@@ -6,6 +6,11 @@ type CreateEditorialProfileData = Pick<
   "name" | "genre" | "biography" | "editorialNotes"
 >;
 
+type UpdateEditorialProfileData = Partial<CreateEditorialProfileData> & {
+  verificationStatus?: IEditorialProfile["verificationStatus"];
+  links?: IEditorialProfile["links"];
+};
+
 export const createEditorialProfile = async (
   adminUserId: string,
   data: CreateEditorialProfileData,
@@ -28,14 +33,37 @@ export const getEditorialProfileById = async (id: string) => {
   return EditorialProfile.findById(id);
 };
 
+export const getEditorialProfileBySlug = async (slug: string) => {
+  return EditorialProfile.findOne({ slug });
+};
+
 export const updateEditorialProfile = async (
   id: string,
-  data: Partial<CreateEditorialProfileData> & {
-    verificationStatus?: IEditorialProfile["verificationStatus"];
-    editorialNotes?: string;
-  },
+  data: UpdateEditorialProfileData,
 ) => {
   return EditorialProfile.findByIdAndUpdate(id, data, { new: true });
+};
+
+export const addFavoriteEditorialProfile = async (
+  profileId: string,
+  username: string,
+) => {
+  return EditorialProfile.findByIdAndUpdate(
+    profileId,
+    { $addToSet: { favoritedBy: username } },
+    { new: true },
+  );
+};
+
+export const removeFavoriteEditorialProfile = async (
+  profileId: string,
+  username: string,
+) => {
+  return EditorialProfile.findByIdAndUpdate(
+    profileId,
+    { $pull: { favoritedBy: username } },
+    { new: true },
+  );
 };
 
 export const deleteEditorialProfile = async (id: string) => {
