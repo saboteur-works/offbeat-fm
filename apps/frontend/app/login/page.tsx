@@ -13,6 +13,7 @@ import { useState } from "react";
 import { authValidators } from "@common/validation";
 import { IUserLogin } from "@common/types/src/types";
 import { mutate } from "swr";
+import ResendVerification from "../../commonComponents/ResendVerification";
 export default function Page() {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -20,12 +21,17 @@ export default function Page() {
     username: "",
     password: "",
   };
-  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loginError, setLoginError] = useState<{
+    message: string;
+    code: number;
+  } | null>(null);
 
   useEffect(() => {
     checkAuthentication().then((response) => {
       if (response?.status !== 200) {
-        setLoginError(response.data?.message || "Not authenticated");
+        setLoginError(
+          response.data || { message: "Not authenticated", code: 0 },
+        );
         return;
       }
       const user = response.data.user;
@@ -48,12 +54,18 @@ export default function Page() {
           try {
             const res = await axiosInstance.post("/auth/log-in", values);
             dispatch(setUser(res.data.user));
-            mutate("/auth/check-auth", { authenticated: true, user: res.data.user }, { revalidate: false });
+            mutate(
+              "/auth/check-auth",
+              { authenticated: true, user: res.data.user },
+              { revalidate: false },
+            );
             toast.success("Login successful!");
             router.push("/discover");
           } catch (error) {
             console.error("Login error:", error.response.data);
-            setLoginError(error.response.data?.message || "Not authenticated");
+            setLoginError(
+              error.response.data || { message: "Not authenticated", code: 0 },
+            );
             toast.error("Login failed. Please check your credentials.");
           }
         }}
@@ -91,10 +103,15 @@ export default function Page() {
               <ErrorText message={errors.password} />
             ) : null}
             <Button label="Login" type="submit" category="outline" />
-            {loginError && <ErrorText message={loginError} />}
+            {loginError && <ErrorText message={loginError.message} />}
           </form>
         )}
       </Formik>
+      {loginError?.code === 2 && (
+        <div className="mt-4">
+          <ResendVerification showForm={true} />
+        </div>
+      )}
     </div>
   );
 }

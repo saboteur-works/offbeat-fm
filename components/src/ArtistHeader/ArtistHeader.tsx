@@ -31,7 +31,9 @@ export default function ArtistHeader({
       </div>
       <div className="artist-info">
         <h1 className="artist-name">{name}</h1>
-        <p className="artist-meta">{totalTracks ?? 0} Tracks</p>
+        {totalTracks !== undefined && (
+          <p className="artist-meta">{totalTracks} Tracks</p>
+        )}
         <div className="artist-tags">
           <span className="genre-tag uppercase">{genre}</span>
         </div>

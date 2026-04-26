@@ -1,2 +1,3 @@
-import { signUpSchema } from "./userFormValidators";
-export { signUpSchema };
+import { resendVerificationSchema, signUpSchema } from "./userFormValidators";
+
+export { signUpSchema, resendVerificationSchema };

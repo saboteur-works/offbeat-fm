@@ -55,6 +55,7 @@ services:
       - DB_USER
       - DB_PASSWORD
       - SESSION_SECRET
+      - RESEND_API_KEY
 
   frontend:
     build:
@@ -76,6 +77,8 @@ secrets:
     file: ./secrets/DB_PASSWORD.txt
   SESSION_SECRET:
     file: ./secrets/SESSION_SECRET.txt
+  RESEND_API_KEY:
+    file: ./secrets/RESEND_API_KEY.txt
 
 networks: # allow services to talk to each other while providing isolation from other docker container, running on the same host
   discovery-network-prod:

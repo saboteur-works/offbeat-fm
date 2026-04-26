@@ -17,6 +17,11 @@ const UserSchema: Schema<IUserDoc, Model<IUserDoc>> = new Schema(
       enum: ["pending", "active", "inactive", "banned"],
       default: "pending",
     },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
     password: {
       type: String,
       set: (ptPassword: string) => bcrypt.hashSync(ptPassword, 10),
@@ -44,6 +49,8 @@ const UserSchema: Schema<IUserDoc, Model<IUserDoc>> = new Schema(
         ref: "Track",
       },
     ],
+    emailVerificationToken: { type: String },
+    emailVerificationExpiry: { type: Date },
   },
   {
     methods: {

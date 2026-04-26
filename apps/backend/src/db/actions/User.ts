@@ -17,12 +17,43 @@ export const createUser = async (user: IUserSignup) => {
       username: user.username,
       email: user.email,
       password: user.password,
+      accountStatus: "pending",
+      role: "user",
     });
     await newUser.save();
     return newUser;
   } catch (error) {
     throw new Error(`Error creating user: ${error}`);
   }
+};
+
+export const getUserByEmail = async (email: string) => {
+  return User.findOne({ email });
+};
+
+export const setVerificationToken = async (
+  userId: string,
+  tokenHash: string,
+  expiry: Date,
+) => {
+  await User.findByIdAndUpdate(userId, {
+    emailVerificationToken: tokenHash,
+    emailVerificationExpiry: expiry,
+  });
+};
+
+export const getUserByVerificationToken = async (tokenHash: string) => {
+  return User.findOne({
+    emailVerificationToken: tokenHash,
+    emailVerificationExpiry: { $gt: new Date() },
+  });
+};
+
+export const clearVerificationToken = async (userId: string) => {
+  await User.findByIdAndUpdate(userId, {
+    accountStatus: "active",
+    $unset: { emailVerificationToken: 1, emailVerificationExpiry: 1 },
+  });
 };
 
 /**

@@ -51,3 +51,11 @@ The secret used to sign session ID cookies
 #### `REDIS_USERNAME` (PROD)
 
 #### `REDIS_PASSWORD` (PROD)
+
+#### `RESEND_API_KEY`
+
+API key for the [Resend](https://resend.com) email service, used to send transactional emails (e.g. email verification). Obtain a key from the Resend dashboard. Required in all environments.
+
+#### `EMAIL_FROM` (optional env var, not a secret)
+
+The sender address used in outgoing emails. Defaults to `onboarding@resend.dev` (Resend's shared test address). Set this to a verified address on your own domain for production. Add to the backend `environment` block in the relevant compose file.

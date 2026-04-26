@@ -134,9 +134,42 @@ interface IUser {
   email: string;
   password: string;
   accountStatus: "pending" | "active" | "inactive" | "banned";
+  role: "user" | "admin";
   favoriteTracks: string[];
   favoriteAlbums: string[];
   favoriteArtists: string[];
+  emailVerificationToken?: string;
+  emailVerificationExpiry?: Date;
+}
+
+/**
+ * An editorial artist profile created by an OffBeat admin.
+ * Artists can discover and claim these profiles, which are then
+ * converted into managed Artist documents.
+ */
+interface IEditorialProfile {
+  name: string;
+  /** URL-friendly version of the profile name. Auto-generated from name. */
+  slug: string;
+  genre: string;
+  biography?: string;
+  artistArt?: string;
+  /** Social and music platform links, same shape as IArtist.links. */
+  links?: {
+    [key in SocialPlatformLinks]?: string;
+  };
+  /** Usernames of users who have favourited this profile. */
+  favoritedBy?: string[];
+  /** Internal admin-only notes about the profile. Never exposed publicly. */
+  editorialNotes?: string;
+  verificationStatus: "unverified" | "pending" | "verified";
+  claimStatus: "unclaimed" | "claimed" | "converted";
+  /** ID of the user who submitted a claim request. */
+  claimedByUserId?: string;
+  /** ID of the Artist document created when an approved claim is finalised. */
+  convertedArtistId?: string;
+  /** ID of the admin who created this profile. */
+  createdByAdminId: string;
 }
 
 /**
@@ -158,6 +191,7 @@ export type {
   IAlbum,
   IArtist,
   IUser,
+  IEditorialProfile,
   IUserLogin,
   IUserSignup,
   CommonLinkKeyMusic,

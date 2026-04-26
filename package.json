@@ -19,6 +19,7 @@
     "typescript-eslint": "^8.43.0"
   },
   "scripts": {
-    "g:tsc": "cd $INIT_CWD && tsc"
+    "g:tsc": "cd $INIT_CWD && tsc",
+    "g:typecheck": "cd $INIT_CWD && tsc --noEmit"
   }
 }

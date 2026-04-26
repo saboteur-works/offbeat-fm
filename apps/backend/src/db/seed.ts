@@ -23,6 +23,15 @@ export const seedDatabase = async () => {
     });
     usersData.push(user);
   }
+  const testUser = new User({
+    username: "testuser",
+    email: "test@example.comm",
+    password: "testpassword", // eslint-disable-line sonarjs/no-hardcoded-passwords
+    accountStatus: "active",
+    role: "admin",
+  });
+  usersData.push(testUser);
+
   const users = await User.insertMany(usersData);
 
   const artistsData = [];

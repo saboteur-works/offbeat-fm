@@ -15,10 +15,9 @@
     // "types": ["node"],
     // and npm install -D @types/node
 
-    // Other Outputs
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    // noEmit: true here prevents bare `tsc` runs at root from emitting files in-place.
+    // Workspaces that need to emit (backend, common packages) explicitly set "noEmit": false.
+    "noEmit": true,
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,

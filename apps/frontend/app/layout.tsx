@@ -1,8 +1,7 @@
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import StoreProvider from "./StoreProvider";
-import Header from "./login/Header";
-import Sidebar from "./Sidebar";
+import AppChrome from "./AppChrome";
 import { Toaster } from "react-hot-toast";
 import { Metadata } from "next";
 import { plexSans, plexCondensed, plexMono, plexSerif } from "@/fonts";
@@ -24,16 +23,7 @@ export default function RootLayout({
         <body>
           <div className="@container mx-auto flex flex-col h-screen">
             <Toaster />
-            <Header />
-            <div className="flex flex-col md:flex-row grow overflow-y-scroll">
-              <Sidebar />
-              {children}
-            </div>
-            <footer className="border-t border-ob-border py-4">
-              <p className="text-sm text-ob-dim">
-                &copy; {new Date().getFullYear()} Saboteur. All rights reserved.
-              </p>
-            </footer>
+            <AppChrome>{children}</AppChrome>
           </div>
         </body>
         <GoogleAnalytics gaId="G-K7ZC9GL4CX" />

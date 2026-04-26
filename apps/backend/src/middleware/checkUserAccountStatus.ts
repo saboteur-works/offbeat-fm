@@ -10,15 +10,20 @@ export default async function isUserActive(
   if (!user) {
     return res.status(401).json({
       message: "No credentials included with request or user not found.",
+      code: 0,
     });
   }
 
   if (user.accountStatus === "banned") {
-    return res.status(403).json({ message: "User account is banned." });
+    return res
+      .status(403)
+      .json({ message: "User account is banned.", code: 1 });
   }
 
   if (user.accountStatus !== "active") {
-    return res.status(401).json({ message: "User account is not active." });
+    return res
+      .status(401)
+      .json({ message: "User account is not active.", code: 2 });
   }
 
   return next();
