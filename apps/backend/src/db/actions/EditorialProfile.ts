@@ -1,5 +1,6 @@
 import { IEditorialProfile } from "@common/types/src/types";
 import EditorialProfile from "../models/EditorialProfile";
+import Artist from "../models/Artist";
 
 type CreateEditorialProfileData = Pick<
   IEditorialProfile,
@@ -85,13 +86,30 @@ export const claimEditorialProfile = async (
   return profile;
 };
 
-export const convertEditorialProfile = async (
-  profileId: string,
-  artistId: string,
-) => {
-  return EditorialProfile.findByIdAndUpdate(
-    profileId,
-    { claimStatus: "converted", convertedArtistId: artistId },
-    { new: true },
-  );
+export const approveAndConvertEditorialProfile = async (profileId: string) => {
+  const profile = await EditorialProfile.findById(profileId);
+  if (!profile) throw new Error("Editorial profile not found");
+  if (profile.claimStatus !== "claimed") {
+    throw new Error("Profile must be in claimed status to convert");
+  }
+  if (!profile.claimedByUserId) {
+    throw new Error("Profile has no claiming user");
+  }
+
+  const artist = new Artist({
+    name: profile.name,
+    genre: profile.genre,
+    biography: profile.biography,
+    links: profile.get("links") as Record<string, string> | undefined,
+    artistArt: profile.artistArt ?? null,
+    managingUserId: profile.claimedByUserId,
+  });
+  await artist.save();
+
+  await EditorialProfile.findByIdAndUpdate(profileId, {
+    claimStatus: "converted",
+    convertedArtistId: artist._id,
+  });
+
+  return artist.toJSON({ flattenMaps: true });
 };

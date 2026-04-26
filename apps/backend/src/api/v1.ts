@@ -60,6 +60,7 @@ import {
   createProfile,
   updateProfile,
   deleteProfile,
+  convertProfile,
 } from "../controllers/admin/editorial";
 import { listUsers, updateUserStatus } from "../controllers/admin/users";
 import { claimProfile } from "../controllers/editorialClaim";
@@ -172,6 +173,9 @@ router
   .get(isLoggedIn, isAdmin, getEditorialProfile)
   .patch(isLoggedIn, isAdmin, updateProfile)
   .delete(isLoggedIn, isAdmin, deleteProfile);
+router
+  .route("/admin/editorial/:id/convert")
+  .post(isLoggedIn, isAdmin, convertProfile);
 
 router.route("/admin/users").get(isLoggedIn, isAdmin, listUsers);
 router

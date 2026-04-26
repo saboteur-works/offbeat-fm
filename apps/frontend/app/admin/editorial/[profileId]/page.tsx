@@ -34,6 +34,7 @@ export default function EditorialProfilePage({
 
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const [converting, setConverting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fields, setFields] = useState<Partial<EditorialProfile>>({});
 
@@ -142,6 +143,29 @@ export default function EditorialProfilePage({
         {profile.claimedByUserId && <p>Claimed by user: {profile.claimedByUserId}</p>}
         {profile.convertedArtistId && <p>Converted to artist: {profile.convertedArtistId}</p>}
         <p>Created by admin: {profile.createdByAdminId}</p>
+        {profile.claimStatus === "claimed" && (
+          <div className="pt-2">
+            <Button
+              label={converting ? "Converting..." : "Convert to Artist"}
+              type="button"
+              category="outline"
+              onClick={async () => {
+                setConverting(true);
+                try {
+                  await axiosInstance.post(`/admin/editorial/${profileId}/convert`);
+                  mutate(endpoint);
+                  toast.success("Artist created and profile converted.");
+                } catch (e: unknown) {
+                  const msg =
+                    e instanceof Error ? e.message : "Failed to convert profile.";
+                  toast.error(msg);
+                } finally {
+                  setConverting(false);
+                }
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {error && <ErrorText message={error} />}

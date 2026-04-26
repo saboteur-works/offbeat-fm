@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IUserDoc } from "../../db/models/User";
 import {
+  approveAndConvertEditorialProfile,
   createEditorialProfile,
   deleteEditorialProfile,
   getEditorialProfileById,
@@ -84,5 +85,15 @@ export const deleteProfile = async (req: Request, res: Response) => {
     return res.status(200).json({ message: "Deleted" });
   } catch {
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const convertProfile = async (req: Request, res: Response) => {
+  try {
+    const artist = await approveAndConvertEditorialProfile(req.params["id"] ?? "");
+    return res.status(201).json({ data: artist });
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "Internal server error";
+    return res.status(400).json({ message });
   }
 };
