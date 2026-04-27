@@ -18,6 +18,19 @@ export default function UserVitalSettings({
   const user = useAppSelector((state) => state.user);
   const [preDelete, setPreDelete] = useState(false);
 
+  const [showUsernameForm, setShowUsernameForm] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [usernameError, setUsernameError] = useState<string | null>(null);
+  const [usernamePending, setUsernamePending] = useState(false);
+  const [usernameSuccess, setUsernameSuccess] = useState(false);
+
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordPending, setPasswordPending] = useState(false);
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+
   const [showReAuthModal, setShowReAuthModal] = useState(false);
   const [reAuthDone, setReAuthDone] = useState(false);
   const [showEmailChangeForm, setShowEmailChangeForm] = useState(false);
@@ -67,6 +80,165 @@ export default function UserVitalSettings({
     } finally {
       setEmailChangePending(false);
     }
+  };
+
+  const handleUsernameSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setUsernameError(null);
+    setUsernamePending(true);
+    try {
+      await axiosInstance.patch("/user/username", { newUsername });
+      setUsernameSuccess(true);
+      setShowUsernameForm(false);
+    } catch (err: unknown) {
+      const res = (err as { response?: { status?: number; data?: { message?: string } } })?.response;
+      if (res?.status === 409) {
+        setUsernameError("That username is already taken.");
+      } else {
+        setUsernameError(res?.data?.message ?? "Something went wrong. Please try again.");
+      }
+    } finally {
+      setUsernamePending(false);
+    }
+  };
+
+  const handlePasswordSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError(null);
+    setPasswordPending(true);
+    try {
+      await axiosInstance.patch("/user/password", { currentPassword, newPassword });
+      setPasswordSuccess(true);
+      setShowPasswordForm(false);
+      setTimeout(() => router.push("/login"), 2000);
+    } catch (err: unknown) {
+      const res = (err as { response?: { status?: number; data?: { message?: string } } })?.response;
+      if (res?.status === 401) {
+        setPasswordError("Current password is incorrect.");
+      } else {
+        setPasswordError(res?.data?.message ?? "Something went wrong. Please try again.");
+      }
+    } finally {
+      setPasswordPending(false);
+    }
+  };
+
+  const renderUsernameSection = () => {
+    if (usernameSuccess) {
+      return (
+        <p className="text-sm text-green-400">
+          Username updated to <strong>{newUsername}</strong>.
+        </p>
+      );
+    }
+    if (showUsernameForm) {
+      return (
+        <form onSubmit={handleUsernameSubmit} className="flex flex-col space-y-3 max-w-sm">
+          <input
+            type="text"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
+            placeholder="New username"
+            required
+          />
+          {usernameError && (
+            <p className="text-brand-red text-sm">{usernameError}</p>
+          )}
+          <div className="flex gap-3">
+            <Button
+              label={usernamePending ? "Saving…" : "Save"}
+              category="primary"
+              type="submit"
+            />
+            <Button
+              label="Cancel"
+              category="outline"
+              onClick={() => {
+                setShowUsernameForm(false);
+                setNewUsername("");
+                setUsernameError(null);
+              }}
+            />
+          </div>
+        </form>
+      );
+    }
+    return (
+      <div className="flex items-center gap-4">
+        <span className="text-sm">{user.username}</span>
+        <Button
+          label="Change username"
+          category="outline"
+          onClick={() => {
+            setUsernameError(null);
+            setShowUsernameForm(true);
+          }}
+        />
+      </div>
+    );
+  };
+
+  const renderPasswordSection = () => {
+    if (passwordSuccess) {
+      return (
+        <p className="text-sm text-green-400">
+          Password changed. Redirecting you to log in…
+        </p>
+      );
+    }
+    if (showPasswordForm) {
+      return (
+        <form onSubmit={handlePasswordSubmit} className="flex flex-col space-y-3 max-w-sm">
+          <input
+            type="password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            placeholder="Current password"
+            required
+          />
+          <input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="New password"
+            required
+          />
+          {passwordError && (
+            <p className="text-brand-red text-sm">{passwordError}</p>
+          )}
+          <div className="flex gap-3">
+            <Button
+              label={passwordPending ? "Saving…" : "Save"}
+              category="primary"
+              type="submit"
+            />
+            <Button
+              label="Cancel"
+              category="outline"
+              onClick={() => {
+                setShowPasswordForm(false);
+                setCurrentPassword("");
+                setNewPassword("");
+                setPasswordError(null);
+              }}
+            />
+          </div>
+        </form>
+      );
+    }
+    return (
+      <div className="flex items-center gap-4">
+        <span className="text-sm">••••••••</span>
+        <Button
+          label="Change password"
+          category="outline"
+          onClick={() => {
+            setPasswordError(null);
+            setShowPasswordForm(true);
+          }}
+        />
+      </div>
+    );
   };
 
   const renderEmailSection = () => {
@@ -131,6 +303,18 @@ export default function UserVitalSettings({
             Email address
           </p>
           {renderEmailSection()}
+        </div>
+        <div>
+          <p className="text-ob-label uppercase text-brand-mid tracking-label mb-2">
+            Username
+          </p>
+          {renderUsernameSection()}
+        </div>
+        <div>
+          <p className="text-ob-label uppercase text-brand-mid tracking-label mb-2">
+            Password
+          </p>
+          {renderPasswordSection()}
         </div>
         <Button
           label="Back to Settings"

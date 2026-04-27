@@ -31,6 +31,10 @@ export const getUserByEmail = async (email: string) => {
   return User.findOne({ email });
 };
 
+export const getUserByUsername = async (username: string) => {
+  return User.findOne({ username });
+};
+
 export const setVerificationToken = async (
   userId: string,
   tokenHash: string,

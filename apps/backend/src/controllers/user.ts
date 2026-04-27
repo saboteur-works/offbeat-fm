@@ -9,10 +9,12 @@ import {
   deleteUser as deleteUserAction,
   setEmailChangeTokens,
   getUserByEmail,
+  getUserByUsername,
   getUserByEmailChangeVerifyToken,
   getUserByEmailChangeCancelToken,
   confirmEmailChange as confirmEmailChangeAction,
   cancelEmailChange as cancelEmailChangeAction,
+  updateUser,
 } from "../db/actions/User";
 import User from "../db/models/User";
 import {
@@ -35,6 +37,21 @@ const CANCEL_TOKEN_TTL_MS = 72 * 60 * 60 * 1000;
 
 const changeEmailSchema = object({
   newEmail: string().email("Must be a valid email.").required("Email is required."),
+});
+
+const changeUsernameSchema = object({
+  newUsername: string()
+    .min(3, "Username must be at least 3 characters.")
+    .max(30, "Username must be at most 30 characters.")
+    .required("Username is required."),
+});
+
+const changePasswordSchema = object({
+  currentPassword: string().required("Current password is required."),
+  newPassword: string()
+    .min(6, "Password must be at least 6 characters.")
+    .max(50, "Password must be at most 50 characters.")
+    .required("New password is required."),
 });
 
 const getClientUrl = () => process.env.CLIENT_URL || "http://localhost:3000";
@@ -298,6 +315,63 @@ export const verifyEmailChange = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error verifying email change:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+export const changeUsername = async (req: Request, res: Response) => {
+  try {
+    let values: { newUsername: string };
+    try {
+      values = await changeUsernameSchema.validate(req.body);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Invalid input.";
+      return res.status(400).json({ message });
+    }
+
+    const newUsername = values.newUsername.trim();
+    const existing = await getUserByUsername(newUsername);
+    if (existing && existing._id.toString() !== req.user._id.toString()) {
+      return res.status(409).json({ message: "That username is already taken." });
+    }
+
+    await updateUser(req.user._id.toString(), { username: newUsername });
+    return res.status(200).json({ username: newUsername });
+  } catch (error) {
+    console.error("Error changing username:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+export const changePassword = async (req: Request, res: Response) => {
+  try {
+    let values: { currentPassword: string; newPassword: string };
+    try {
+      values = await changePasswordSchema.validate(req.body);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Invalid input.";
+      return res.status(400).json({ message });
+    }
+
+    const userDoc = await User.findById(req.user._id);
+    if (!userDoc) {
+      return res.status(401).json({ message: "User not found." });
+    }
+
+    const isValid = await userDoc.checkPassword(values.currentPassword);
+    if (!isValid) {
+      return res.status(401).json({ message: "Current password is incorrect." });
+    }
+
+    userDoc.password = values.newPassword;
+    await userDoc.save();
+
+    req.session.destroy(() => {
+      res.clearCookie("connect.sid");
+      res.status(200).json({ message: "Password updated. Please log in again." });
+    });
+  } catch (error) {
+    console.error("Error changing password:", error);
     return res.status(500).json({ message: "Internal server error." });
   }
 };

@@ -51,6 +51,8 @@ import {
   initiateEmailChange,
   verifyEmailChange,
   cancelEmailChange,
+  changeUsername,
+  changePassword,
 } from "../controllers/user";
 import isLoggedIn from "../middleware/isLoggedIn";
 import isAdmin from "../middleware/isAdmin";
@@ -175,6 +177,8 @@ router
   );
 router.route("/user/email/verify/:token").get(verifyEmailChange);
 router.route("/user/email/cancel/:token").get(cancelEmailChange);
+router.route("/user/username").patch(isLoggedIn, checkUserAccountStatus, changeUsername);
+router.route("/user/password").patch(isLoggedIn, checkUserAccountStatus, changePassword);
 router.route("/user/:userId").delete(isLoggedIn, deleteUser);
 router
   .route("/users/:userId/managed-artists")
