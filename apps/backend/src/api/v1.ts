@@ -47,10 +47,19 @@ import {
   getFavorites,
   getManagedArtists,
   deleteUser,
+  reAuth,
+  initiateEmailChange,
+  verifyEmailChange,
+  cancelEmailChange,
 } from "../controllers/user";
 import isLoggedIn from "../middleware/isLoggedIn";
 import isAdmin from "../middleware/isAdmin";
 import { resendVerificationIpLimiter } from "../middleware/resendVerificationLimiter";
+import {
+  emailChangeIpLimiter,
+  emailChangeUserRateLimiter,
+} from "../middleware/emailChangeLimiter";
+import requireReAuth from "../middleware/requireReAuth";
 import Multer from "multer";
 import { getGenres } from "../controllers/genre";
 import checkUserAccountStatus from "../middleware/checkUserAccountStatus";
@@ -151,6 +160,21 @@ router.route("/tracks/artist/:artistId").get(getTracksByArtistId);
 
 // User Endpoints
 router.route("/user/favorites").get(isLoggedIn, getFavorites);
+router
+  .route("/user/re-auth")
+  .post(emailChangeIpLimiter, isLoggedIn, checkUserAccountStatus, reAuth);
+router
+  .route("/user/email/change")
+  .post(
+    emailChangeIpLimiter,
+    isLoggedIn,
+    checkUserAccountStatus,
+    requireReAuth,
+    emailChangeUserRateLimiter,
+    initiateEmailChange,
+  );
+router.route("/user/email/verify/:token").get(verifyEmailChange);
+router.route("/user/email/cancel/:token").get(cancelEmailChange);
 router.route("/user/:userId").delete(isLoggedIn, deleteUser);
 router
   .route("/users/:userId/managed-artists")

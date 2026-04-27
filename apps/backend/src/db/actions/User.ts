@@ -56,6 +56,71 @@ export const clearVerificationToken = async (userId: string) => {
   });
 };
 
+export const setEmailChangeTokens = async (
+  userId: string,
+  pendingEmail: string,
+  verifyHash: string,
+  verifyExpiry: Date,
+  cancelHash: string,
+  cancelExpiry: Date,
+  originalEmail: string,
+) => {
+  await User.findByIdAndUpdate(userId, {
+    pendingEmail,
+    emailChangeVerifyToken: verifyHash,
+    emailChangeVerifyExpiry: verifyExpiry,
+    emailChangeCancelToken: cancelHash,
+    emailChangeCancelExpiry: cancelExpiry,
+    emailChangeOriginalEmail: originalEmail,
+    emailChangeRequestedAt: new Date(),
+  });
+};
+
+export const getUserByEmailChangeVerifyToken = async (verifyHash: string) => {
+  return User.findOne({
+    emailChangeVerifyToken: verifyHash,
+    emailChangeVerifyExpiry: { $gt: new Date() },
+  });
+};
+
+export const getUserByEmailChangeCancelToken = async (cancelHash: string) => {
+  return User.findOne({
+    emailChangeCancelToken: cancelHash,
+    emailChangeCancelExpiry: { $gt: new Date() },
+  });
+};
+
+export const confirmEmailChange = async (userId: string, newEmail: string) => {
+  await User.findByIdAndUpdate(userId, {
+    email: newEmail,
+    $inc: { sessionVersion: 1 },
+    $unset: {
+      pendingEmail: 1,
+      emailChangeVerifyToken: 1,
+      emailChangeVerifyExpiry: 1,
+    },
+  });
+};
+
+export const cancelEmailChange = async (
+  userId: string,
+  originalEmail: string,
+) => {
+  await User.findByIdAndUpdate(userId, {
+    email: originalEmail,
+    $inc: { sessionVersion: 1 },
+    $unset: {
+      pendingEmail: 1,
+      emailChangeVerifyToken: 1,
+      emailChangeVerifyExpiry: 1,
+      emailChangeCancelToken: 1,
+      emailChangeCancelExpiry: 1,
+      emailChangeOriginalEmail: 1,
+      emailChangeRequestedAt: 1,
+    },
+  });
+};
+
 /**
  * Sets the user's status
  * @param userId

@@ -8,7 +8,10 @@ type ServerEventTypes =
   | "USER_CREATED"
   | "USER_DELETED"
   | "USER_UPDATED"
-  | "IMAGE_UPLOADED";
+  | "IMAGE_UPLOADED"
+  | "EMAIL_CHANGE_INITIATED"
+  | "EMAIL_CHANGE_CONFIRMED"
+  | "EMAIL_CHANGE_CANCELLED";
 
 interface BaseEventPayload {
   eventType: ServerEventTypes;
@@ -84,6 +87,26 @@ export interface UserUpdatedEventPayload extends UpdateEventPayload {
   userId: string;
 }
 
+export interface EmailChangeInitiatedEventPayload extends BaseEventPayload {
+  eventType: "EMAIL_CHANGE_INITIATED";
+  userId: string;
+  maskedNewEmail: string;
+  ip: string;
+  initiatedAt: string;
+}
+
+export interface EmailChangeConfirmedEventPayload extends BaseEventPayload {
+  eventType: "EMAIL_CHANGE_CONFIRMED";
+  userId: string;
+  confirmedAt: string;
+}
+
+export interface EmailChangeCancelledEventPayload extends BaseEventPayload {
+  eventType: "EMAIL_CHANGE_CANCELLED";
+  userId: string;
+  cancelledAt: string;
+}
+
 export type ServerEventPayload =
   | ArtistProfileCreatedEventPayload
   | ArtistProfileDeletedEventPayload
@@ -94,7 +117,10 @@ export type ServerEventPayload =
   | UserCreatedEventPayload
   | UserDeletedEventPayload
   | UserUpdatedEventPayload
-  | ImageUploadedEventPayload;
+  | ImageUploadedEventPayload
+  | EmailChangeInitiatedEventPayload
+  | EmailChangeConfirmedEventPayload
+  | EmailChangeCancelledEventPayload;
 
 export const createArtistProfileCreatedEvent = (
   artistId: string,
@@ -221,3 +247,31 @@ export const createUserUpdatedEvent = (
 export const logServerEvent = (event: ServerEventPayload) => {
   console.info(event);
 };
+
+export const createEmailChangeInitiatedEvent = (
+  userId: string,
+  maskedNewEmail: string,
+  ip: string,
+): EmailChangeInitiatedEventPayload => ({
+  eventType: "EMAIL_CHANGE_INITIATED",
+  userId,
+  maskedNewEmail,
+  ip,
+  initiatedAt: new Date().toISOString(),
+});
+
+export const createEmailChangeConfirmedEvent = (
+  userId: string,
+): EmailChangeConfirmedEventPayload => ({
+  eventType: "EMAIL_CHANGE_CONFIRMED",
+  userId,
+  confirmedAt: new Date().toISOString(),
+});
+
+export const createEmailChangeCancelledEvent = (
+  userId: string,
+): EmailChangeCancelledEventPayload => ({
+  eventType: "EMAIL_CHANGE_CANCELLED",
+  userId,
+  cancelledAt: new Date().toISOString(),
+});

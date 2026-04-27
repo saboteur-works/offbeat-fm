@@ -120,11 +120,18 @@ export const resendVerification = async (req: Request, res: Response) => {
 };
 
 export const login = (req: Request, res: Response) => {
+  req.session.sessionVersion = req.user.sessionVersion ?? 0;
   const {
     password,
     __v,
     emailVerificationToken,
     emailVerificationExpiry,
+    emailChangeVerifyToken,
+    emailChangeVerifyExpiry,
+    emailChangeCancelToken,
+    emailChangeCancelExpiry,
+    emailChangeOriginalEmail,
+    emailChangeRequestedAt,
     ...returnUser
   } = req.user.toObject();
   return res
@@ -142,6 +149,12 @@ export const checkAuth = (req: Request, res: Response) => {
       __v,
       emailVerificationToken,
       emailVerificationExpiry,
+      emailChangeVerifyToken,
+      emailChangeVerifyExpiry,
+      emailChangeCancelToken,
+      emailChangeCancelExpiry,
+      emailChangeOriginalEmail,
+      emailChangeRequestedAt,
       ...returnUser
     } = req.user.toObject();
     if (returnUser.accountStatus !== "active") {

@@ -140,6 +140,14 @@ interface IUser {
   favoriteArtists: string[];
   emailVerificationToken?: string;
   emailVerificationExpiry?: Date;
+  sessionVersion?: number;
+  pendingEmail?: string;
+  emailChangeVerifyToken?: string;
+  emailChangeVerifyExpiry?: Date;
+  emailChangeCancelToken?: string;
+  emailChangeCancelExpiry?: Date;
+  emailChangeOriginalEmail?: string;
+  emailChangeRequestedAt?: Date;
 }
 
 /**
