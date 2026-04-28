@@ -51,6 +51,14 @@ const UserSchema: Schema<IUserDoc, Model<IUserDoc>> = new Schema(
     ],
     emailVerificationToken: { type: String },
     emailVerificationExpiry: { type: Date },
+    sessionVersion: { type: Number, default: 0 },
+    pendingEmail: { type: String },
+    emailChangeVerifyToken: { type: String },
+    emailChangeVerifyExpiry: { type: Date },
+    emailChangeCancelToken: { type: String },
+    emailChangeCancelExpiry: { type: Date },
+    emailChangeOriginalEmail: { type: String },
+    emailChangeRequestedAt: { type: Date },
   },
   {
     methods: {

@@ -8,6 +8,7 @@ import { connectToDatabase } from "./db";
 import { Strategy as LocalStrategy } from "passport-local";
 import User, { IUserDoc } from "./db/models/User";
 import api from "./api/v1";
+import checkSessionVersion from "./middleware/checkSessionVersion";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import { RedisStore } from "connect-redis";
@@ -101,6 +102,7 @@ passport.deserializeUser(async function (id, done) {
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(checkSessionVersion);
 app.use("/api/v1", api);
 
 app.listen(process.env.PORT, () => {
