@@ -1,16 +1,17 @@
 import { Resend } from "resend";
 import { readFileSync } from "fs";
 
-const getApiKey = (): string => {
+const apiKey = (() => {
   if (process.env.RESEND_API_KEY) return process.env.RESEND_API_KEY;
   try {
     return readFileSync("/run/secrets/RESEND_API_KEY", "utf-8").trim();
   } catch {
     throw new Error("RESEND_API_KEY is not configured");
   }
-};
+})();
 
-const resend = new Resend(getApiKey());
+const DEV_MODE = apiKey === "dev";
+const resend = DEV_MODE ? null : new Resend(apiKey);
 
 const FROM_ADDRESS = process.env.EMAIL_FROM || "onboarding@resend.dev";
 
@@ -23,12 +24,25 @@ export const maskEmail = (email: string): string => {
   return `${visible}**${domain}`;
 };
 
+const sendEmail = async (payload: {
+  to: string;
+  subject: string;
+  html: string;
+}): Promise<void> => {
+  if (DEV_MODE) {
+    const urls = payload.html.match(/https?:\/\/[^\s"<]+/g) ?? [];
+    console.log(`\n[EMAIL] To: ${payload.to} | ${payload.subject}`);
+    urls.forEach((url) => console.log(`  → ${url}`));
+    return;
+  }
+  await resend!.emails.send({ from: FROM_ADDRESS, ...payload });
+};
+
 export const sendVerificationEmail = async (
   toEmail: string,
   verificationUrl: string,
 ): Promise<void> => {
-  await resend.emails.send({
-    from: FROM_ADDRESS,
+  await sendEmail({
     to: toEmail,
     subject: "Verify your email address",
     html: `
@@ -49,8 +63,7 @@ export const sendEmailChangeVerificationEmail = async (
   toEmail: string,
   verifyUrl: string,
 ): Promise<void> => {
-  await resend.emails.send({
-    from: FROM_ADDRESS,
+  await sendEmail({
     to: toEmail,
     subject: "Confirm your new email address",
     html: `
@@ -72,8 +85,7 @@ export const sendEmailChangeNotificationEmail = async (
   maskedNewEmail: string,
   cancelUrl: string,
 ): Promise<void> => {
-  await resend.emails.send({
-    from: FROM_ADDRESS,
+  await sendEmail({
     to: oldEmail,
     subject: "Security alert: email change requested for your account",
     html: `
@@ -95,8 +107,7 @@ export const sendEmailChangeNotificationEmail = async (
 export const sendEmailChangeConfirmedEmail = async (
   newEmail: string,
 ): Promise<void> => {
-  await resend.emails.send({
-    from: FROM_ADDRESS,
+  await sendEmail({
     to: newEmail,
     subject: "Your email address has been updated",
     html: `
