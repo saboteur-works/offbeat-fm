@@ -31,15 +31,23 @@
     "start": "next start",
     "typecheck": "yarn g:typecheck",
     "lint": "eslint",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+    "test": "vitest run --passWithNoTests"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6",
+    "@testing-library/react": "^16",
+    "@testing-library/user-event": "^14",
     "@types/image-blob-reduce": "^4",
     "@types/node": "24.5.2",
     "@types/pica": "^9",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
-    "typescript": "5.9.3"
+    "@vitejs/plugin-react": "^4",
+    "jsdom": "^29.1.0",
+    "msw": "^2",
+    "typescript": "5.9.3",
+    "vitest": "^3"
   },
   "resolutions": {
     "@types/react": "19.2.2",
