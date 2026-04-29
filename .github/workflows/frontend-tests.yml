@@ -31,8 +31,8 @@ jobs:
 
       - name: Build workspace dependencies
         run: |
-          yarn workspace @common/types build
           yarn workspace @common/json-data build
+          yarn workspace @common/types build
           yarn workspace @common/validation build
           yarn workspace @mda/components build
 
