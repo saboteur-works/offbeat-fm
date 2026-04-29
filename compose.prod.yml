@@ -1,7 +1,7 @@
 name: music-discovery-app-prod
 services:
   redis:
-    image: redis:latest
+    image: redis:7.4
     ports:
       - 6379:6379
     networks:
@@ -15,7 +15,7 @@ services:
       retries: 3
   mongo:
     attach: false
-    image: mongo:latest
+    image: mongo:8.0
     ports:
       - 27017:27017
     networks:
@@ -31,7 +31,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: ./apps/backend/Dockerfile.prod
+      dockerfile: ./Dockerfile.backend.prod
     environment:
       NODE_ENV: production
       DB_HOST: mongo
@@ -60,7 +60,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: ./apps/frontend/Dockerfile.prod
+      dockerfile: ./Dockerfile.frontend.prod
     environment:
       NODE_ENV: production
     ports:
@@ -82,8 +82,6 @@ secrets:
 
 networks: # allow services to talk to each other while providing isolation from other docker container, running on the same host
   discovery-network-prod:
-    driver: bridge
-  jenkins:
     driver: bridge
 
 volumes: # enable persistence of database data across container restart
