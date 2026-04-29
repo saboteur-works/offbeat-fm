@@ -1,6 +1,6 @@
 services:
   fake-gcs-server:
-    image: fsouza/fake-gcs-server:latest
+    image: fsouza/fake-gcs-server:1.54.0
     ports:
       - 8080:8080
     networks:
@@ -24,7 +24,7 @@ services:
       ]
   mongo:
     attach: false
-    image: mongo:latest
+    image: mongo:8.0
     ports:
       - 27017:27017
     networks:
