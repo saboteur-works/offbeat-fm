@@ -95,11 +95,18 @@ common/validation/ \
 ./common/validation/
 RUN corepack enable
 
-RUN yarn workspace @common/types build
 RUN yarn workspace @common/json-data build
+RUN yarn workspace @common/types build
 RUN yarn workspace @common/validation build
 RUN yarn workspace @mda/components build
 CMD ["tail", "-f", "/dev/null"]
+
+FROM base AS frontend-test
+WORKDIR /app
+COPY --from=frontend-build /app ./
+RUN corepack enable
+ENV NODE_ENV=test
+CMD [ "yarn", "workspace", "frontend", "test" ]
 
 FROM base AS frontend-dev
 RUN addgroup -g 1224 nextjs-group && \
