@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+  "type": "module",
   "packageManager": "yarn@4.9.1",
   "dependencies": {
     "@common/json-data": "workspace:^",
@@ -44,9 +45,11 @@
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "@vitejs/plugin-react": "^4",
-    "jsdom": "^29.1.0",
+    "happy-dom": "^20.9.0",
+    "jsdom": "^25",
     "msw": "^2",
     "typescript": "5.9.3",
+    "vite": "^6",
     "vitest": "^3"
   },
   "resolutions": {
