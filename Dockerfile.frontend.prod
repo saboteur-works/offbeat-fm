@@ -61,42 +61,21 @@ COPY --from=frontend-dependencies \
 ./
 
 # Copy frontend source files
-COPY --from=frontend-dependencies \
-/app/apps/frontend/ \
-/app/apps/frontend/
-
 COPY apps/frontend/ \
 /app/apps/frontend/
-
-COPY --from=frontend-dependencies \
-/app/common/json-data \
-./common/json-data
 
 COPY \
 common/json-data/ \
 ./common/json-data/
 
 # Copy component source files
-COPY --from=frontend-dependencies \
-/app/components \
-./components
-
 COPY \
 components/ \
 /app/components/
 
-COPY --from=frontend-dependencies \
-/app/common/types \
-./common/types
-
 COPY \
 common/types/ \
 ./common/types/
-
-COPY \
-common/validation/package.json \
-common/validation/tsconfig.json \
-./common/validation/
 
 COPY \
 common/validation/ \
