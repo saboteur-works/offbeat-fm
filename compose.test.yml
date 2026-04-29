@@ -6,8 +6,6 @@ services:
       - 8080:8080
     networks:
       - discovery-network
-    volumes:
-      - ../data:/data
     command:
       [
         "-scheme",
@@ -28,8 +26,6 @@ services:
       - 5555:5555
     networks:
       - discovery-network
-    volumes:
-      - ../data:/data
     command:
       [
         "-scheme",
