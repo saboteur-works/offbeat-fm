@@ -64,6 +64,14 @@ services:
     secrets:
       - SESSION_SECRET
       - RESEND_API_KEY
+    develop:
+      watch:
+        - path: ./common/types/src
+          action: rebuild
+        - path: ./common/validation/src
+          action: rebuild
+        - path: ./common/json-data/src
+          action: rebuild
 
   frontend:
     build:
