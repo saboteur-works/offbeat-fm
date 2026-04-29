@@ -8,15 +8,15 @@ WORKDIR /app
 
 COPY package.json yarn.lock tsconfig.json .yarnrc.yml ./
 COPY apps/backend/package.json apps/backend/tsconfig.json ./apps/backend/
+COPY common/types/package.json common/types/tsconfig.json ./common/types/
+COPY common/json-data/package.json common/json-data/tsconfig.json ./common/json-data/
+COPY common/validation/package.json common/validation/tsconfig.json ./common/validation/
+RUN corepack enable && yarn install
 COPY apps/backend/src/ ./apps/backend/src/
 COPY apps/backend/test-helpers/ ./apps/backend/test-helpers/
-COPY common/types/package.json common/types/tsconfig.json ./common/types/
 COPY common/types/src/ ./common/types/src/
-COPY common/json-data/package.json common/json-data/tsconfig.json ./common/json-data/
 COPY common/json-data/src/ ./common/json-data/src/
-COPY common/validation/package.json common/validation/tsconfig.json ./common/validation/
 COPY common/validation/src/ ./common/validation/src/
-RUN corepack enable && yarn install
 
 FROM backend-base AS backend-build
 WORKDIR /app
