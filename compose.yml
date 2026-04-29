@@ -71,9 +71,14 @@ services:
       dockerfile: Dockerfile.frontend.dev
     develop:
       watch:
-        - path: ./components
+        - path: ./components/src
           action: rebuild
-          include: "./components/dist/**"
+        - path: ./common/types/src
+          action: rebuild
+        - path: ./common/validation/src
+          action: rebuild
+        - path: ./common/json-data/src
+          action: rebuild
     volumes:
       - type: bind
         source: ./apps/frontend
