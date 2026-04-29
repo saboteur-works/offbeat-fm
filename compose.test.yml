@@ -93,22 +93,13 @@ services:
     #   retries: 5
     #   start_period: 30s
 
-  # frontend:
-  #   build:
-  #     context: .
-  #     dockerfile: ./apps/frontend/Dockerfile
-  #   volumes:
-  #     - type: bind
-  #       source: ./apps/frontend
-  #       target: /app/apps/frontend
-  #   environment:
-  #     NODE_ENV: development
-  #   ports:
-  #     - 3000:3000
-  #   networks:
-  #     - discovery-network
-  #   depends_on:
-  #     - backend
+  frontend-test:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.frontend.dev
+      target: frontend-test
+    environment:
+      NODE_ENV: test
 
 networks: # allow services to talk to each other while providing isolation from other docker container, running on the same host
   discovery-network:
