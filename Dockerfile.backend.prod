@@ -1,27 +1,26 @@
+# syntax=docker/dockerfile:1
 ARG NODE_VERSION=24.4.0
 FROM node:${NODE_VERSION}-alpine AS base
 
 FROM base AS backend-build
 ENV NODE_ENV=production
 WORKDIR /app
-# Copy base dependencies
 COPY package.json yarn.lock tsconfig.json .yarnrc.yml ./
 COPY apps/backend/package.json ./apps/backend/
-COPY apps/backend/src/ ./apps/backend/src/
 COPY apps/backend/tsconfig.json ./apps/backend/tsconfig.json
-
 COPY common/json-data/package.json ./common/json-data/
-COPY common/json-data/src/ ./common/json-data/src/
 COPY common/json-data/tsconfig.json ./common/json-data/tsconfig.json
 COPY common/types/package.json ./common/types/
-COPY common/types/src/ ./common/types/src/
 COPY common/types/tsconfig.json ./common/types/tsconfig.json
 COPY common/validation/package.json common/validation/package.json
 COPY common/validation/tsconfig.json common/validation/tsconfig.json
-COPY common/validation/src/ ./common/validation/src/
 
-# Install dependencies
 RUN corepack enable && yarn install
+
+COPY apps/backend/src/ ./apps/backend/src/
+COPY common/json-data/src/ ./common/json-data/src/
+COPY common/types/src/ ./common/types/src/
+COPY common/validation/src/ ./common/validation/src/
 
 RUN yarn workspace @common/json-data build
 RUN yarn workspace @common/types build

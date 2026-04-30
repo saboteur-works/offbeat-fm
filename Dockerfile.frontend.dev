@@ -62,25 +62,13 @@ COPY --from=frontend-dependencies \
 ./
 
 # Copy frontend source files
-COPY --from=frontend-dependencies \
-/app/apps/frontend/ \
-/app/apps/frontend/
-
 COPY apps/frontend/ \
 /app/apps/frontend/
 
 # Copy component source files
-COPY --from=frontend-dependencies \
-/app/components \
-./components
-
 COPY \
 components/ \
 /app/components/
-
-COPY --from=frontend-dependencies \
-/app/common/types \
-./common/types
 
 COPY \
 common/types/ \

@@ -1,13 +1,11 @@
 services:
   fake-gcs-server:
     attach: false
-    image: fsouza/fake-gcs-server:latest
+    image: fsouza/fake-gcs-server:1.54.0
     ports:
       - 8080:8080
     networks:
       - discovery-network
-    volumes:
-      - ../data:/data
     command:
       [
         "-scheme",
@@ -23,13 +21,11 @@ services:
       ]
   fake-gcs-server-external:
     attach: false
-    image: fsouza/fake-gcs-server:latest
+    image: fsouza/fake-gcs-server:1.54.0
     ports:
       - 5555:5555
     networks:
       - discovery-network
-    volumes:
-      - ../data:/data
     command:
       [
         "-scheme",
@@ -45,7 +41,7 @@ services:
       ]
 
   mongo:
-    image: mongo:latest
+    image: mongo:8.0
     attach: false
     ports:
       - 27017:27017

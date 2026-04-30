@@ -1,12 +1,12 @@
 services:
   fake-gcs-server:
-    image: fsouza/fake-gcs-server:latest
+    image: fsouza/fake-gcs-server:1.54.0
     ports:
       - 8080:8080
     networks:
       - discovery-network
     volumes:
-      - ../data:/data
+      - fake-gcs-data:/storage
     command:
       [
         "-scheme",
@@ -24,13 +24,19 @@ services:
       ]
   mongo:
     attach: false
-    image: mongo:latest
+    image: mongo:8.0
     ports:
       - 27017:27017
     networks:
       - discovery-network
     volumes:
       - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')", "--quiet"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   backend:
     build:
@@ -54,7 +60,8 @@ services:
     networks:
       - discovery-network
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/api/v1/health"]
       interval: 10s
@@ -64,6 +71,14 @@ services:
     secrets:
       - SESSION_SECRET
       - RESEND_API_KEY
+    develop:
+      watch:
+        - path: ./common/types/src
+          action: rebuild
+        - path: ./common/validation/src
+          action: rebuild
+        - path: ./common/json-data/src
+          action: rebuild
 
   frontend:
     build:
@@ -71,9 +86,14 @@ services:
       dockerfile: Dockerfile.frontend.dev
     develop:
       watch:
-        - path: ./components
+        - path: ./components/src
           action: rebuild
-          include: "./components/dist/**"
+        - path: ./common/types/src
+          action: rebuild
+        - path: ./common/validation/src
+          action: rebuild
+        - path: ./common/json-data/src
+          action: rebuild
     volumes:
       - type: bind
         source: ./apps/frontend
@@ -100,4 +120,6 @@ networks: # allow services to talk to each other while providing isolation from 
 
 volumes: # enable persistence of database data across container restart
   mongo-data:
+    driver: local
+  fake-gcs-data:
     driver: local
