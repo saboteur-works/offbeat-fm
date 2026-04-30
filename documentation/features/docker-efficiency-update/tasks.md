@@ -129,8 +129,8 @@ Derived from: `documentation/features/docker-efficiency-update/feature.md`
 **Depends on:** none
 **Estimate:** 1
 **Notes:** Current values are `run/secrets/DB_USER` and `run/secrets/DB_PASSWORD` — these are literal strings, not secret file reads. The `mongo` service has no `secrets:` block, so Docker is not mounting anything. The official mongo image does not support `_FILE`-suffix secret injection for `MONGO_INITDB_*` vars (unlike e.g. Postgres). Per the spec, when Docker secrets are not supported, the exception must be documented inline.
-**Completed:**
-**Implementation notes:**
+**Completed:** 2026-04-29
+**Implementation notes:** Replaced broken literal strings (`run/secrets/DB_USER`, `run/secrets/DB_PASSWORD`) with Compose variable interpolation (`${DB_USER}`, `${DB_PASSWORD}`) and added a 4-line comment block explaining that the official mongo image does not support `_FILE`-suffix secret injection for `MONGO_INITDB_ROOT_*` vars. Users supply values via `--env-file` or shell env vars referencing the existing `./secrets/` files.
 
 ---
 

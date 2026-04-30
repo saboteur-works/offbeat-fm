@@ -24,8 +24,12 @@ services:
       - mongo-data-prod:/data/db
     command: mongod --auth # Enable authentication
     environment:
-      MONGO_INITDB_ROOT_USERNAME: run/secrets/DB_USER
-      MONGO_INITDB_ROOT_PASSWORD: run/secrets/DB_PASSWORD
+      # The official mongo image does not support _FILE-suffix secret injection for
+      # MONGO_INITDB_ROOT_* variables (unlike Postgres). Docker secrets cannot be used
+      # here. Supply DB_USER and DB_PASSWORD via --env-file or as shell env vars when
+      # running in production (e.g. export DB_USER=$(cat ./secrets/DB_USER.txt)).
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
       MONGO_INITDB_DATABASE: music-discovery-app-prod
 
   backend:
